@@ -40,15 +40,20 @@ public class MultiLanguage : MonoBehaviour
 
     private void OnDropdownValueChanged(int index)
     {
+        string languageCode;
         if (index == 0)
         {
+            languageCode = "en";
             Debug.Log("mudou pra ingles");
             LocalizationManager.Language = "English";
+            PlayerPrefs.SetString("Language", languageCode);
         }
         else
         {
+            languageCode = "pt";
             Debug.Log("mudou pra pt");
             LocalizationManager.Language = "Portuguese";
+            PlayerPrefs.SetString("Language", languageCode);
         }
     }
 
