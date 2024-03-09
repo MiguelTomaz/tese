@@ -13,6 +13,9 @@ public class QuizController : MonoBehaviour
 
     public GameObject quizPanel;
     public GameObject quizPortoPanel;
+    public GameObject endQuizQuestionsContainer;
+    public GameObject endQuizPanel;
+
     public Text questionNumber;
     public Text difficulty;
     public Text question;
@@ -20,6 +23,7 @@ public class QuizController : MonoBehaviour
     public Text answer2;
     public Text answer3;
     public Text correctAnswer;
+    public Text finalScore;
 
     public Button answer1Button;
     public Button answer2Button;
@@ -27,6 +31,9 @@ public class QuizController : MonoBehaviour
     public Button answer4Button;
     public int totalScore = 0;
 
+    private bool isGetQuestion2 = true;
+    private bool listenersRemoved = false;
+    private int quizId;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +43,17 @@ public class QuizController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        /**
+        if(isGetQuestion2 == false && !listenersRemoved)
+        {
+            Debug.Log("remover listeners dos botoes");
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+            listenersRemoved = true;
+        }
+        */
     }
 
     public class QuizCreationResponse
@@ -63,6 +80,7 @@ public class QuizController : MonoBehaviour
         public int score;
         public int difficulty;
     }
+
 
     [System.Serializable]
     public class QuestionsId
@@ -113,7 +131,7 @@ public class QuizController : MonoBehaviour
             else
             {
                 Debug.Log("Quiz created successfully with id: " + response.quizId);
-
+                quizId = response.quizId;
                 StartCoroutine(GetQuizQuestions(response.quizId));
             }
         }
@@ -207,19 +225,60 @@ public class QuizController : MonoBehaviour
             }
 
             Debug.Log("botoes");
-            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion2(questions[1].id)));
-            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion2(questions[1].id)));
-            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion2(questions[1].id)));
-            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion2(questions[1].id, firstQuestion.score)));
+
+            answer1Button.onClick.AddListener(() => {
+                if (isGetQuestion2)
+                {
+                    StartCoroutine(GetQuestion2(questions[1].id, questions));
+                }
+                else
+                {
+                    Debug.Log("nao devia estar aqui");
+                }
+            });
+
+            answer2Button.onClick.AddListener(() => {
+                if (isGetQuestion2)
+                {
+                    StartCoroutine(GetQuestion2(questions[1].id, questions));
+                }
+                else
+                {
+                    Debug.Log("nao devia estar aqui");
+                }
+            });
+
+            answer3Button.onClick.AddListener(() => {
+                if (isGetQuestion2)
+                {
+                    StartCoroutine(GetQuestion2(questions[1].id, questions));
+                }
+                else
+                {
+                    Debug.Log("nao devia estar aqui");
+                }
+            });
+
+            answer4Button.onClick.AddListener(() => {
+                if (isGetQuestion2)
+                {
+                    StartCoroutine(GetQuestion2(questions[1].id, questions, firstQuestion.score));
+                }
+                else
+                {
+                    Debug.Log("nao devia estar aqui");
+                }
+            });
 
             quizPortoPanel.SetActive(true);
         }
     }
 
-    private IEnumerator GetQuestion2(int questionId, int score = 0)
+    private IEnumerator GetQuestion2(int questionId, List<Question> questions, int score = 0)
     {
+        isGetQuestion2 = false; 
         totalScore += score;
-        Debug.Log("get question 2");
+        Debug.Log("get question 2: " + isGetQuestion2);
         // Monta a URL com o ID da pergunta
         string url = questionUrl + questionId;
 
@@ -290,12 +349,73 @@ public class QuizController : MonoBehaviour
                 {
                     difficulty.text = "difícil";
                 }
-
-                //answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(question2.id)));
-                //answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(question2.id)));
-                //answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(question2.id)));
-                //answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(questions[1].id, firstQuestion.score)));
             }
+            /**
+            if (listenersRemoved)
+            {
+                answer1Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+                answer2Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+                answer3Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+                answer4Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, question2.score)));
+            }
+            else
+            {
+                Debug.Log("chegou ao fim mas nao deu para colocar eventos nso botoes");
+            }
+            */
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, question2.score)));
+        }
+    }
+
+    public IEnumerator GetToQuizEnd(List<Question> questions, int score = 0)
+    {
+        quizPortoPanel.SetActive(false);
+        endQuizPanel.SetActive(true);
+        Debug.Log("GetToQuizEnd");
+        totalScore += score;
+        Debug.Log("totalScore: " + totalScore);
+        finalScore.text = totalScore + "";
+        GameObject questionTemplate = endQuizQuestionsContainer.transform.GetChild(0).gameObject;
+        GameObject container = transform.Find("EndQuizPanel/QuestionsPanel/ScrollArea/Scroll/Container").gameObject;
+
+        GameObject q;
+        string savedLanguage = PlayerPrefs.GetString("Language", "en");
+
+        for (int i=0; i< questions.Count; i++)
+        {
+            q = Instantiate(questionTemplate, endQuizQuestionsContainer.transform);
+            q.transform.GetChild(0).GetComponent<Text>().text = (savedLanguage == "en") ? questions[i].question_en : questions[i].question_pt;
+            q.transform.GetChild(2).GetComponent<Text>().text = (savedLanguage == "en") ? questions[i].correct_answer_en : questions[i].correct_answer_pt;
+        }
+
+        Destroy(questionTemplate);
+        StartCoroutine(UpdateQuizScore(quizId, totalScore));
+        yield return "";
+    }
+
+    public IEnumerator UpdateQuizScore(int quizId, int score)
+    {
+        Debug.Log("update score");
+        // Monta a URL com o ID do quiz e o score
+        string url = quizUrl + "updateScore/" + quizId + "/" + score;
+
+        // Cria a solicitação HTTP POST
+        UnityWebRequest request = UnityWebRequest.Post(url, "");
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to update quiz score: " + request.error);
+        }
+        else
+        {
+            Debug.Log("Quiz score updated successfully.");
         }
     }
 }

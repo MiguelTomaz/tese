@@ -31,6 +31,8 @@ public class IndexNavigationController : MonoBehaviour
     public GameObject loginPainel;
     public GameObject registerPainel;
     public GameObject aboutUsPainel;
+    public GameObject initPainel;
+
     #endregion
 
     #region init
@@ -41,14 +43,17 @@ public class IndexNavigationController : MonoBehaviour
     public GameObject homePainel;
     public GameObject statsPainel;
     public GameObject optionsPainel;
+    public GameObject portoQuiz;
+    public GameObject endQuiz;
     #endregion
-    
+
     #region navbar
     public Button quizNavButton;
     public Button comNavButton;
     public Button homeNavButton;
     public Button statsNavButton;
     public Button optionsNavButton;
+    public Button exitEndQuizButton;
 
     #endregion
 
@@ -70,6 +75,8 @@ public class IndexNavigationController : MonoBehaviour
 
     #endregion
 
+    public Button LogoutButton;
+
     private void Start()
     {
         LoginButton.onClick.AddListener(GoToLoginPainel);
@@ -87,6 +94,9 @@ public class IndexNavigationController : MonoBehaviour
         backFromCom.onClick.AddListener(BackNavBar);
         backFromStats.onClick.AddListener(BackNavBar);
         backFromSettings.onClick.AddListener(BackNavBar);
+
+        LogoutButton.onClick.AddListener(Logout);
+        exitEndQuizButton.onClick.AddListener(ExitEndQuiz);
     }
 
     public void GoToLoginPainel()
@@ -163,6 +173,22 @@ public class IndexNavigationController : MonoBehaviour
         comPainel.SetActive(false);
         quizPainel.SetActive(false);
         statsPainel.SetActive(false);
+    }
+
+    public void Logout()
+    {
+        PlayerPrefs.DeleteAll();
+        optionsPainel.SetActive(false);
+        homePainel.SetActive(true);
+        initPainel.SetActive(false);
+        indexPainel.SetActive(true);
+    }
+
+    public void ExitEndQuiz()
+    {
+        portoQuiz.SetActive(false);
+        endQuiz.SetActive(false);
+        quizPainel.SetActive(true);
     }
 
 }
