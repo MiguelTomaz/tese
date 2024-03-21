@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +12,16 @@ public class CommunityController : MonoBehaviour
     // Start is called before the first frame update
     public GameObject communityPanel;
     public GameObject communityPhotoContainer;
+    public Sprite isLikedButtonSprite;
+    public Sprite dontLikedButtonSprite;
     private double containerHeight;
     private double photoNumber;
     private double photoHeight = 500;
 
-    public string apiUrl = "http://localhost:3000/api/photo/community";
+    private string apiUrl = "http://localhost:3000/api/photo/community";
+    private string checkIsLikedUrl = "http://localhost:3000/api/photo/community/like/check";
+    private string likedUrl = "http://localhost:3000/api/photo/community/like";
+
     public Button CommunityBtn;
 
     [System.Serializable]
@@ -64,6 +70,7 @@ public class CommunityController : MonoBehaviour
 
     IEnumerator SendGetCommunityRequest(string url)
     {
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
@@ -84,7 +91,7 @@ public class CommunityController : MonoBehaviour
                 AdjustContainerHeight(photoNumber);
                 foreach (PhotoData item in jsonArray)
                 {
-                    Debug.Log("item: " + item.description);
+                    Debug.Log("item: " + item.id);
                     p = Instantiate(communityTemplate, communityPhotoContainer.transform);
                     Image imageComponent = p.transform.GetChild(0).GetComponent<Image>();
                     LoadImageFromBase64(item.image_base64, imageComponent);
@@ -92,6 +99,13 @@ public class CommunityController : MonoBehaviour
                     p.transform.GetChild(5).GetComponent<Text>().text = item.email;
                     p.transform.GetChild(7).GetComponent<Text>().text = item.date;
                     p.transform.GetChild(9).GetComponent<Text>().text = item.photo_likes + "";
+                    CheckLike(checkIsLikedUrl, item.id, touristId, p.transform.GetChild(10).GetComponent<Button>());
+                    Button likeButton = p.transform.GetChild(10).GetComponent<Button>();
+                    Text likeText = p.transform.GetChild(9).GetComponent<Text>();
+                    likeButton.onClick.AddListener(() => Like(item.id, touristId, likeButton, likeText));
+
+
+
 
                 }
                 Destroy(communityTemplate);
@@ -120,5 +134,104 @@ public class CommunityController : MonoBehaviour
 
         // Define a textura no componente Image
         image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+    }
+
+    void CheckLike(string url, int photoId, int touristId, Button buttonLike)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("touristId", touristId);
+        form.AddField("photoId", photoId);
+
+        // Enviando a requisição
+        StartCoroutine(SendRequestCheckLike(url, form, buttonLike, photoId));
+    }
+
+    IEnumerator SendRequestCheckLike(string url, WWWForm form, Button buttonLike, int photoId)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(url, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erro");
+            }
+            else
+            {
+                Debug.Log("check like da foto: " + photoId);
+                string jsonResponse = www.downloadHandler.text;
+                Debug.Log("jsonResponse: " + jsonResponse);
+                JObject jsonObject = JObject.Parse(jsonResponse);
+                bool liked = (bool)jsonObject["liked"];
+                if (liked)
+                {
+                    //likeTextComponent.text = "deu like";
+                    Image buttonImage = buttonLike.GetComponent<Image>();
+                    Debug.Log("deu like");
+                    buttonImage.sprite = isLikedButtonSprite;
+                }
+                /**
+                bool liked = JsonConvert.DeserializeObject<bool>(jsonResponse);
+                if (liked)
+                {
+                    likeTextComponent.text = "deu like";
+                }
+                */
+            }
+        }
+    }
+
+    void Like(int photoId, int touristId, Button likeButton, Text likeNumber)
+    {
+        // Chame o método para dar like na foto
+        WWWForm form = new WWWForm();
+        form.AddField("touristId", touristId);
+        form.AddField("photoId", photoId);
+        Debug.Log("like da foto " + photoId + " cujos likes atuais sao: " + likeNumber);
+        // Enviando a requisição
+        StartCoroutine(SendRequestLike(likedUrl, form, photoId, likeButton, likeNumber));
+    }
+
+    IEnumerator SendRequestLike(string url, WWWForm form, int photoId, Button buttonLike, Text likeNumber)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(url, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erro");
+            }
+            else
+            {
+                Debug.Log("like da foto: " + photoId);
+                string jsonResponse = www.downloadHandler.text;
+                Debug.Log("jsonResponse: " + jsonResponse);
+                JObject jsonObject = JObject.Parse(jsonResponse);
+                bool liked = (bool)jsonObject["like"];
+                int likesNumber = (int)jsonObject["likes"];
+                likeNumber.text = likesNumber + "";
+                if (liked)
+                {
+                    //likeTextComponent.text = "deu like";
+                    Image buttonImage = buttonLike.GetComponent<Image>();
+                    Debug.Log("deu like");
+                    buttonImage.sprite = isLikedButtonSprite;
+                }
+                else
+                {
+                    Image buttonImage = buttonLike.GetComponent<Image>();
+                    Debug.Log("retirou like");
+                    buttonImage.sprite = dontLikedButtonSprite;
+                }
+                /**
+                bool liked = JsonConvert.DeserializeObject<bool>(jsonResponse);
+                if (liked)
+                {
+                    likeTextComponent.text = "deu like";
+                }
+                */
+            }
+        }
     }
 }
