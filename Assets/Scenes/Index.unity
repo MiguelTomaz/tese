@@ -3756,6 +3756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiUrl: http://localhost:3000/api/photo/gallery/
   GalleryBtn: {fileID: 1071767910}
+  backBtn: {fileID: 967945436}
   photoImage: {fileID: 1344518202}
   photoDescription: {fileID: 1878718772}
   galleryPanel: {fileID: 997255236}
@@ -7456,6 +7457,7 @@ MonoBehaviour:
   communityPhotoContainer: {fileID: 1537745300}
   isLikedButtonSprite: {fileID: 21300000, guid: e413068496195dc4e9f4819e871c4c77, type: 3}
   dontLikedButtonSprite: {fileID: 21300000, guid: c15144da54436dd4497dc7bf9435ab76, type: 3}
+  leaveCommunityBtn: {fileID: 1474575250}
   CommunityBtn: {fileID: 634996477}
 --- !u!1 &649467509
 GameObject:
@@ -12013,6 +12015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiUrl: http://localhost:3000/api/photo/gallery/
   GalleryBtn: {fileID: 1071767910}
+  backBtn: {fileID: 967945436}
   photoImage: {fileID: 1344518202}
   photoDescription: {fileID: 1878718772}
   galleryPanel: {fileID: 997255236}
@@ -13107,8 +13110,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00068665, y: -0.0001812}
-  m_SizeDelta: {x: 487.77, y: 111.74}
+  m_AnchoredPosition: {x: 7.2032, y: -0.0001812}
+  m_SizeDelta: {x: 473.3649, y: 111.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1151691236
 MonoBehaviour:
@@ -14116,8 +14119,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00068665, y: -0.0001812}
-  m_SizeDelta: {x: 487.77, y: 111.74}
+  m_AnchoredPosition: {x: 7.2032, y: -0.0001812}
+  m_SizeDelta: {x: 473.3649, y: 111.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1248550952
 MonoBehaviour:
@@ -18760,8 +18763,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00068665, y: -0.0001812}
-  m_SizeDelta: {x: 487.77, y: 111.74}
+  m_AnchoredPosition: {x: 6.174301, y: -0.0001812}
+  m_SizeDelta: {x: 475.4228, y: 111.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1630162113
 MonoBehaviour:
@@ -21979,6 +21982,7 @@ MonoBehaviour:
   communityPhotoContainer: {fileID: 1537745300}
   isLikedButtonSprite: {fileID: 0}
   dontLikedButtonSprite: {fileID: 0}
+  leaveCommunityBtn: {fileID: 0}
   CommunityBtn: {fileID: 634996477}
 --- !u!1 &1876040653
 GameObject:
@@ -24647,6 +24651,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statsButton: {fileID: 2085258634}
   score: {fileID: 1334643609}
+  poiVisted: {fileID: 572050933}
+  photoTaken: {fileID: 547321669}
+  user1Leaderboard: {fileID: 1808682456}
+  user2Leaderboard: {fileID: 206090277}
+  user3Leaderboard: {fileID: 691406166}
+  touristEmailLeaderboard1: {fileID: 1630162113}
+  touristEmailLeaderboard2: {fileID: 1248550952}
+  touristEmailLeaderboard3: {fileID: 1151691236}
+  touristPOILeaderboard1: {fileID: 85712092}
+  touristPOILeaderboard2: {fileID: 697604873}
+  touristPOILeaderboard3: {fileID: 1745007656}
+  touristPhotoLeaderboard1: {fileID: 1754727455}
+  touristPhotoLeaderboard2: {fileID: 1876040655}
+  touristPhotoLeaderboard3: {fileID: 1214950348}
+  touristScoreLeaderboard1: {fileID: 2037129544}
+  touristScoreLeaderboard2: {fileID: 359227073}
+  touristScoreLeaderboard3: {fileID: 2035902994}
 --- !u!1 &2090495850
 GameObject:
   m_ObjectHideFlags: 0

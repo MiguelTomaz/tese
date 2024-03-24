@@ -11,16 +11,18 @@ public class GalleryController : MonoBehaviour
     // Start is called before the first frame update
     public string apiUrl = "http://localhost:3000/api/photo/gallery/";
     public Button GalleryBtn;
+    public Button backBtn;
     public Image photoImage;
     public Text photoDescription;
     public GameObject galleryPanel;
     public GameObject galleryPhotoContainer;
-
+    private GameObject photoTemplate;
 
     void Start()
     {
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
         GalleryBtn.onClick.AddListener(() => GetGallery(touristId));
+        backBtn.onClick.AddListener(LeaveGallery);
     }
 
     // Update is called once per frame
@@ -54,8 +56,11 @@ public class GalleryController : MonoBehaviour
         StartCoroutine(SendGetGalleryRequest(url));
     }
 
+    private List<GameObject> instantiatedPhotoObjects = new List<GameObject>();
+
     IEnumerator SendGetGalleryRequest(string url)
     {
+        ClearInstantiatedPhotoObjects();
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
@@ -86,7 +91,7 @@ public class GalleryController : MonoBehaviour
 
                 // Parse do JSON response para uma lista de dicionários
                 List<object> jsonArray = JsonConvert.DeserializeObject<List<object>>(jsonResponse);
-                GameObject photoTemplate = galleryPhotoContainer.transform.GetChild(0).gameObject;
+                photoTemplate = galleryPhotoContainer.transform.GetChild(0).gameObject;
                 GameObject picture = transform.Find("GalleryPanel/PicturePanel/ScrollArea/Scroll/Container").gameObject;
                 GameObject p;
                 // Percorre cada item do JSON response
@@ -100,8 +105,10 @@ public class GalleryController : MonoBehaviour
                     Image imageComponent = p.transform.GetChild(0).GetComponent<Image>();
                     LoadImageFromBase64(item.image_base64, imageComponent);
                     p.transform.GetChild(1).GetComponent<Text>().text = item.description;
+                    instantiatedPhotoObjects.Add(p);
                 }
-                Destroy(photoTemplate);
+                //Destroy(photoTemplate);
+                photoTemplate.SetActive(false);
 
                 string firstItemJson = jsonArray[0].ToString();
                 PhotoData firstPhotoData = JsonConvert.DeserializeObject<PhotoData>(firstItemJson);
@@ -136,6 +143,16 @@ public class GalleryController : MonoBehaviour
         }
     }
 
+    private void ClearInstantiatedPhotoObjects()
+    {
+        foreach (GameObject obj in instantiatedPhotoObjects)
+        {
+            Destroy(obj);
+        }
+        instantiatedPhotoObjects.Clear();
+    }
+
+
     public void LoadImageFromBase64(string base64String, Image image)
     {
         Debug.Log("LoadImageFromBase64");
@@ -149,5 +166,12 @@ public class GalleryController : MonoBehaviour
 
         // Define a textura no componente Image
         image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+    }
+    public void LeaveGallery()
+    {
+        photoTemplate.SetActive(true);
+        ClearInstantiatedPhotoObjects();
+        Debug.Log("leave gallery");
+        galleryPanel.SetActive(false);
     }
 }

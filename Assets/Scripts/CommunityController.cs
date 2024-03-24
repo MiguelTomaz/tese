@@ -21,6 +21,8 @@ public class CommunityController : MonoBehaviour
     private string apiUrl = "http://localhost:3000/api/photo/community";
     private string checkIsLikedUrl = "http://localhost:3000/api/photo/community/like/check";
     private string likedUrl = "http://localhost:3000/api/photo/community/like";
+    private GameObject communityTemplate;
+    public Button leaveCommunityBtn;
 
     public Button CommunityBtn;
 
@@ -42,6 +44,7 @@ public class CommunityController : MonoBehaviour
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
         Debug.Log("touristId: " + touristId);
         CommunityBtn.onClick.AddListener(() => GetCommunity(touristId));
+        leaveCommunityBtn.onClick.AddListener(LeaveCommunity);
         /**
         AdjustContainerHeight();
         GameObject communityTemplate = communityPhotoContainer.transform.GetChild(0).gameObject;
@@ -67,9 +70,12 @@ public class CommunityController : MonoBehaviour
         string url = apiUrl;// + touristId;
         StartCoroutine(SendGetCommunityRequest(url));
     }
+    private List<GameObject> instantiatedPhotoObjects = new List<GameObject>();
 
     IEnumerator SendGetCommunityRequest(string url)
     {
+        ClearInstantiatedPhotoObjects();
+
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
@@ -85,7 +91,7 @@ public class CommunityController : MonoBehaviour
                 string jsonResponse = request.downloadHandler.text;
                 Debug.Log("jsonResponse: " + jsonResponse);
                 List<PhotoData> jsonArray = JsonConvert.DeserializeObject<List<PhotoData>>(jsonResponse);
-                GameObject communityTemplate = communityPhotoContainer.transform.GetChild(0).gameObject;
+                communityTemplate = communityPhotoContainer.transform.GetChild(0).gameObject;
                 GameObject p;
                 photoNumber = jsonArray.Count;
                 AdjustContainerHeight(photoNumber);
@@ -103,15 +109,24 @@ public class CommunityController : MonoBehaviour
                     Button likeButton = p.transform.GetChild(10).GetComponent<Button>();
                     Text likeText = p.transform.GetChild(9).GetComponent<Text>();
                     likeButton.onClick.AddListener(() => Like(item.id, touristId, likeButton, likeText));
-
-
+                    instantiatedPhotoObjects.Add(p);
 
 
                 }
-                Destroy(communityTemplate);
+                //Destroy(communityTemplate);
+                communityTemplate.SetActive(false);
                 communityPanel.SetActive(true);
             }
         }
+    }
+
+    private void ClearInstantiatedPhotoObjects()
+    {
+        foreach (GameObject obj in instantiatedPhotoObjects)
+        {
+            Destroy(obj);
+        }
+        instantiatedPhotoObjects.Clear();
     }
 
     void AdjustContainerHeight(double numberElements)
@@ -233,5 +248,13 @@ public class CommunityController : MonoBehaviour
                 */
             }
         }
+    }
+
+    public void LeaveCommunity()
+    {
+        Debug.Log("LEAVE COMMUNITY");
+        communityTemplate.SetActive(true);
+        ClearInstantiatedPhotoObjects();
+        Debug.Log("leave community");
     }
 }
