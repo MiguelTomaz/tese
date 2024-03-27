@@ -95,6 +95,9 @@ public class UserLocation : MonoBehaviour
             lat = Input.location.lastData.latitude;
 
             userLocationText.text = "lon: " + lon + ", lat: " + lat;
+            PlayerPrefs.SetString("UserLatitude", lat.ToString());
+            PlayerPrefs.SetString("UserLongitude", lon.ToString());
+            PlayerPrefs.Save();
             CalcularRotacao();
 
             //start map with the user coordinates

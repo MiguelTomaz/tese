@@ -16,6 +16,15 @@ public class LoginController : MonoBehaviour
     public GameObject loginPainel;
     public GameObject initPainel;
 
+    public GameObject homePainel;
+    public GameObject StatsPainel;
+    public GameObject settingsPainel;
+    public GameObject comPainel;
+    public GameObject quizPainel;
+
+    public GameObject galleryPainel;
+    public GameObject chooseRoutesPainel;
+
     string API_URI = "http://localhost:3000/api/";
     // User
     [System.Serializable]
@@ -133,6 +142,13 @@ public class LoginController : MonoBehaviour
 
                 loginPainel.SetActive(false);
                 initPainel.SetActive(true);
+                homePainel.SetActive(true);
+                StatsPainel.SetActive(false);
+                comPainel.SetActive(false);
+                settingsPainel.SetActive(false);
+                quizPainel.SetActive(false);
+                galleryPainel.SetActive(false);
+                chooseRoutesPainel.SetActive(false);
             }
             else if (responseData != null && responseData.error != null)
             {
