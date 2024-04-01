@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoutesController : MonoBehaviour
@@ -427,6 +428,7 @@ public class RoutesController : MonoBehaviour
 
         LoadImageFromBase64(routeImage, imageRouteSelected);
 
+        startRouteExploration.onClick.AddListener(() => ExploreRoute(routeId));
         routeSelectPainel.SetActive(true);
     }
 
@@ -489,6 +491,12 @@ public class RoutesController : MonoBehaviour
         return degrees * Math.PI / 180;
     }
 
+    public void ExploreRoute(int routeId)
+    {
+        PlayerPrefs.SetInt("choosenRoute", routeId);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("SampleScene");
+    }
 
     public void BackFromSelectRoute()
     {
