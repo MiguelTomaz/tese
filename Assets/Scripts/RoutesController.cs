@@ -479,6 +479,7 @@ public class RoutesController : MonoBehaviour
         double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
         // Distância em metros
+        Debug.Log("distance: " + earthRadius * c);
         double distance = earthRadius * c;
 
         // Verifica se a distância está dentro do limite especificado

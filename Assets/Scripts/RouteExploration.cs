@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,23 +50,48 @@ public class RouteExploration : MonoBehaviour
         public string website;
         public string opening_hours;
         public int rating;
+        public int Order;
     }
 
 
     // Start is called before the first frame update
+    public GameObject routeExplorationDetailsPainel;
+    public Button addOrderPoiTesteBtn;
+    public Button openRouteExplorationDetailsPainelBtn;
+    public Button closeRouteExplorationDetailsPainelBtn;
+    private bool isEplorationBegin = false;
     private string apiUrlRouteDetails = "http://localhost:3000/api/route/details/";
+    private List<PointOfInterest> poiListWithOrder = new List<PointOfInterest>();
+    private string savedLanguage = "";
+    private int routePoiCurrentOrder = 0;
     public Text exploringRouteText;
     public Text RouteName;
     public Text RouteCity;
     public Text RouteCategory;
+    public Text latitudeUserText;
+    public Text longitudeUserText;
+
+    //current poi
+    public Text currentPoiName;
+    public Text currentPoiLat;
+    public Text currentPoiLong;
+    public Text currentPoiDistance;
+
+    //next poi
+    public Text nextPoiName;
+    public Text nextPoiLat;
+    public Text nextPoiLong;
+    public Text nextPoiDistance;
     void Start()
     {
+        savedLanguage = PlayerPrefs.GetString("Language", "en");
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
-        Debug.Log("touristId: " + touristId);
-
         int choosenRoute = PlayerPrefs.GetInt("choosenRoute", -1); // -1 é o valor padrão se a chave "UserID" não existir
-        Debug.Log("choosenRoute: " + choosenRoute);
         GetRouteDetails(choosenRoute);
+
+        openRouteExplorationDetailsPainelBtn.onClick.AddListener(openPainelRouteExploration);
+        closeRouteExplorationDetailsPainelBtn.onClick.AddListener(closePainelRouteExploration);
+        addOrderPoiTesteBtn.onClick.AddListener(addRoutePoiOrder);
     }
 
     // Update is called once per frame
@@ -76,7 +102,7 @@ public class RouteExploration : MonoBehaviour
 
     private void GetRouteDetails(int id)
     {
-        Debug.Log("aqui");
+        openRouteExplorationDetailsPainelBtn.gameObject.SetActive(false);
         StartCoroutine(GetRoutesDetailsRequest(id));
     }
 
@@ -84,7 +110,6 @@ public class RouteExploration : MonoBehaviour
     {
 
         string url = apiUrlRouteDetails + id;
-        Debug.Log("routes get details da rota " + id + ", url: " + url);
         // Envia a solicitação
         UnityWebRequest request = UnityWebRequest.Get(url);
 
@@ -99,27 +124,10 @@ public class RouteExploration : MonoBehaviour
         {
             Debug.Log("get routes details");
             string jsonResponse = request.downloadHandler.text;
-            //Debug.Log("jsonResponse: " + jsonResponse);
-            /**
-            List<RouteDetails> jsonArray = JsonConvert.DeserializeObject<List<RouteDetails>>(jsonResponse);
-            foreach (RouteDetails item in jsonArray)
-            {
-                Debug.Log("item3: " + item.name);
-            }
-            */
             RouteDetailsResponse response = JsonUtility.FromJson<RouteDetailsResponse>(jsonResponse);
 
             if (response != null)
             {
-
-                Debug.Log("ID da Rota: " + response.route.id);
-                Debug.Log("Nome da Rota: " + response.route.name);
-
-                RouteName.text = response.route.name;
-                //poiDescription = response.route.d
-                RouteCity.text = response.route.city;
-                RouteCategory.text = response.route.category;
-
                 string exploringRoute = "";
                 string savedLanguage = PlayerPrefs.GetString("Language", "en");
                 if (savedLanguage == "en")
@@ -132,6 +140,83 @@ public class RouteExploration : MonoBehaviour
                 }
                 exploringRouteText.text = exploringRoute;
 
+                string latitudeString = PlayerPrefs.GetString("UserLatitude");
+                string longitudeString = PlayerPrefs.GetString("UserLongitude");
+
+
+                double latitudeUser = 41.756947;
+                double longitudeUser = -7.4620061;
+
+                if (!string.IsNullOrEmpty(latitudeString))
+                {
+                    latitudeUser = double.Parse(latitudeString);
+                }
+
+                if (!string.IsNullOrEmpty(longitudeString))
+                {
+                    longitudeUser = double.Parse(longitudeString);
+                }
+
+                latitudeUserText.text = "lat: " + latitudeUser;
+                longitudeUserText.text = "lat: " + longitudeUser;
+
+                if(isEplorationBegin == false)
+                {
+                    Debug.Log("isEplorationBegin == falase");
+                    int order = 0;
+                    foreach (var poi in response.poiList)
+                    {
+                        poi.Order = order;
+                        poiListWithOrder.Add(poi);
+                        order++;
+                    }
+                }
+                foreach (var poi in poiListWithOrder)
+                {
+                    Debug.Log("poi order: " + poi.Order + ", current order: " + routePoiCurrentOrder);
+                    if(poi.Order == routePoiCurrentOrder)
+                    {
+                        currentPoiName.text = poi.name;
+                        currentPoiLat.text = "lat: " + poi.latitude;
+                        currentPoiLong.text = "long: " +poi.longitude;
+                        double currentDistance = CalculateDistance(latitudeUser, longitudeUser, poi.latitude, poi.longitude);
+                        string message = "";
+                        if (savedLanguage == "en")
+                        {
+                            message = "Your distance to the current POI: " + currentDistance.ToString("F2") + " m";
+                        }
+                        else
+                        {
+                            message = "A tua distancia ao POI atual: " + currentDistance.ToString("F2") + " m";
+                        }
+                        Debug.Log("distancia current: " + currentDistance);
+                        currentPoiDistance.text = message;
+
+                    }
+                    if(poi.Order == routePoiCurrentOrder + 1)
+                    {
+                        nextPoiName.text = poi.name;
+                        nextPoiLat.text = "lat: " + poi.latitude;
+                        nextPoiLong.text = "long: " + poi.longitude;
+                        string message = "";
+                        double nextDistance = CalculateDistance(latitudeUser, longitudeUser, poi.latitude, poi.longitude);
+                        if (savedLanguage == "en")
+                        {
+                            message = "Your distance to the next POI: " + nextDistance.ToString("F2") + " m";
+                        }
+                        else
+                        {
+                            message = "A tua distancia ao POI seguinte: " + nextDistance.ToString("F2") + " m";
+                        }
+                        nextPoiDistance.text = message;
+                    }
+                    else
+                    {
+                        nextPoiName.text = "no more POI";
+                        nextPoiLat.text = "";
+                        nextPoiLong.text = "";
+                    }
+                }
             }
             else
             {
@@ -139,5 +224,53 @@ public class RouteExploration : MonoBehaviour
             }
            
         }
+    }
+
+    public void closePainelRouteExploration()
+    {
+        openRouteExplorationDetailsPainelBtn.gameObject.SetActive(true);
+        routeExplorationDetailsPainel.SetActive(false);
+    }
+
+    public void openPainelRouteExploration()
+    {
+        isEplorationBegin = true;
+        Debug.Log("routePoiCurrentOrder: " + routePoiCurrentOrder);
+        int choosenRoute = PlayerPrefs.GetInt("choosenRoute", -1); // -1 é o valor padrão se a chave "UserID" não existir
+        GetRouteDetails(choosenRoute);
+        routeExplorationDetailsPainel.SetActive(true);
+    }
+    public void addRoutePoiOrder()
+    {
+        Debug.Log("click add poi current order. before: " + routePoiCurrentOrder);
+        routePoiCurrentOrder = routePoiCurrentOrder + 1;
+        Debug.Log("after click add poi current order. after: " + routePoiCurrentOrder);
+    }
+
+    public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+    {
+        const double earthRadius = 6371000; // raio da Terra em metros
+
+        // Converte graus para radianos
+        double dLat = DegreesToRadians(lat2 - lat1);
+        double dLon = DegreesToRadians(lon2 - lon1);
+
+        // Fórmula de Haversine
+        double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                   Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians(lat2)) *
+                   Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+        double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+        // Distância em metros
+        double distance = earthRadius * c;
+
+        // Verifica se a distância está dentro do limite especificado
+        return distance;
+    }
+
+    public double DegreesToRadians(double degrees)
+    {
+        return degrees * Math.PI / 180;
     }
 }
