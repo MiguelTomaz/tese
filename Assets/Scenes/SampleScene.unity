@@ -633,6 +633,8 @@ GameObject:
   m_Component:
   - component: {fileID: 185611276}
   - component: {fileID: 185611275}
+  - component: {fileID: 185611278}
+  - component: {fileID: 185611277}
   m_Layer: 0
   m_Name: RouteExploration
   m_TagString: Untagged
@@ -652,8 +654,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e344964c2b867104bb52a83945110276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  earthManager: {fileID: 185611278}
+  prefabLivraria: {fileID: 3063691710656336736, guid: 50be7e3b174e67349b1c9a1c2a0454ed, type: 3}
+  prefabUni: {fileID: 5538932503960445389, guid: 2f323633bb620534f89b7a9e6818d151, type: 3}
+  prefabClerigos: {fileID: 2566420571910648974, guid: 9b604b79baf143c44be6a593ff3b6a6d, type: 3}
+  aRAnchorManager: {fileID: 150483825}
+  geospatialObjects: []
   routeExplorationDetailsPainel: {fileID: 1622495422}
-  addOrderPoiTesteBtn: {fileID: 32392242}
+  addOrderPoiTesteBtn: {fileID: 586425494}
   openRouteExplorationDetailsPainelBtn: {fileID: 1564409124}
   closeRouteExplorationDetailsPainelBtn: {fileID: 1296695651}
   exploringRouteText: {fileID: 536442994}
@@ -685,6 +693,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &185611277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185611274}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b745b11f4fb497b488f13f0acdf4127f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userLocationText: {fileID: 0}
+  cilindroUI: {fileID: 0}
+--- !u!114 &185611278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185611274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04013b89158ee479c9d622e942e3b60b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &232301302
 GameObject:
   m_ObjectHideFlags: 0

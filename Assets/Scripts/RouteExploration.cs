@@ -5,9 +5,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+using Google.XR.ARCoreExtensions;
 
 public class RouteExploration : MonoBehaviour
 {
+    [SerializeField] private AREarthManager earthManager;
+    public GameObject prefabLivraria;
+    public GameObject prefabUni;
+    public GameObject prefabClerigos;
+    public Dictionary<int, GameObject> POI_prefabs;
+
+    [Serializable]
+    public struct GeospatialObject
+    {
+        public GameObject objectPrefab;
+        public EarthPosition earthPosition;
+    }
+
+    [Serializable]
+    public struct EarthPosition
+    {
+        public double latitude;
+        public double longitude;
+        public double altitude;
+    }
+
+    [SerializeField] private ARAnchorManager aRAnchorManager;
+
+    [SerializeField] private List<GeospatialObject> geospatialObjects = new List<GeospatialObject>();
+
     [System.Serializable]
     public class RouteDetailsResponse
     {
@@ -84,6 +112,11 @@ public class RouteExploration : MonoBehaviour
     public Text nextPoiDistance;
     void Start()
     {
+        POI_prefabs = new Dictionary<int, GameObject>();
+        POI_prefabs.Add(3, prefabLivraria);
+        POI_prefabs.Add(4, prefabUni);
+        POI_prefabs.Add(8, prefabClerigos);
+
         savedLanguage = PlayerPrefs.GetString("Language", "en");
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
         int choosenRoute = PlayerPrefs.GetInt("choosenRoute", -1); // -1 é o valor padrão se a chave "UserID" não existir
@@ -169,6 +202,27 @@ public class RouteExploration : MonoBehaviour
                         poi.Order = order;
                         poiListWithOrder.Add(poi);
                         order++;
+                    }
+                    foreach (PointOfInterest poi in poiListWithOrder)
+                    {
+                        EarthPosition earthPosition = new EarthPosition
+                        {
+                            latitude = poi.latitude,
+                            longitude = poi.longitude,
+                            altitude = poi.altitude
+                        };
+
+                        if (POI_prefabs.TryGetValue(poi.id, out GameObject prefab))
+                        {
+                            GeospatialObject geospatialObject = new GeospatialObject
+                            {
+                                objectPrefab = prefab,
+                                earthPosition = earthPosition
+                            };
+
+                            geospatialObjects.Add(geospatialObject);
+                        }
+
                     }
                 }
                 foreach (var poi in poiListWithOrder)
@@ -272,5 +326,29 @@ public class RouteExploration : MonoBehaviour
     public double DegreesToRadians(double degrees)
     {
         return degrees * Math.PI / 180;
+    }
+
+    private void PlaceObjects()
+    {
+        if (earthManager.EarthTrackingState == TrackingState.Tracking)
+        {
+            var geospatialPose = earthManager.CameraGeospatialPose;
+
+
+            foreach (var obj in geospatialObjects)
+            {
+                var eartPosition = obj.earthPosition;
+                var objAnchor = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, eartPosition.latitude, eartPosition.longitude, eartPosition.altitude, Quaternion.identity);
+                var objAnchor2 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.756905, -7.462092, eartPosition.altitude, Quaternion.identity);
+                Instantiate(obj.objectPrefab, objAnchor.transform);
+
+            }
+        }
+
+        else if (earthManager.EarthTrackingState == TrackingState.None)
+        {
+            Debug.Log("TrackingState.None");
+            Invoke("PlaceObjects", 5.0f);
+        }
     }
 }
