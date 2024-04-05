@@ -17970,7 +17970,6 @@ GameObject:
   - component: {fileID: 1334888805}
   - component: {fileID: 1334888804}
   - component: {fileID: 1334888803}
-  - component: {fileID: 1334888802}
   m_Layer: 5
   m_Name: RegisterBtn
   m_TagString: Untagged
@@ -17999,36 +17998,6 @@ RectTransform:
   m_AnchoredPosition: {x: -3, y: -644}
   m_SizeDelta: {x: 816.09, y: 141.477}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1334888802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1334888800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c17317dddcc44f945a6b3d7201484d36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chooseRouteBtn: {fileID: 1334888803}
-  leaveChooseRouteBtn: {fileID: 912526329}
-  leaveRouteDetailsBtn: {fileID: 461256039}
-  leaveRouteSelectBtn: {fileID: 1490327573}
-  startRouteExploration: {fileID: 1481537333}
-  chooseRoutesPainel: {fileID: 1485693408}
-  routeContainer: {fileID: 915854578}
-  poiContainer: {fileID: 1903470752}
-  routeDetailsPainel: {fileID: 21757391}
-  routeSelectPainel: {fileID: 973324738}
-  imageRouteTest: {fileID: 1812935138}
-  imageRouteSelected: {fileID: 2132218138}
-  RouteName: {fileID: 1701190731}
-  RouteCity: {fileID: 1183731700}
-  RouteCategory: {fileID: 1954328030}
-  selectRouteExplanation: {fileID: 145561051}
-  selectRouteExplanation2: {fileID: 1395253189}
-  selectRouteName: {fileID: 1959067873}
 --- !u!114 &1334888803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24055,7 +24024,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -82.2484, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1733862995
 MonoBehaviour:
@@ -24083,7 +24052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.050980393, g: 0.14509805, b: 0.20784314, a: 1}
+  m_Color: {r: 0.23529412, g: 0.7019608, b: 0.44313726, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -24092,7 +24061,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 70
+    m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -24103,7 +24072,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Register
+  m_Text: Don't have an account? Register now!
 --- !u!222 &1733862997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26169,7 +26138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.23529412, g: 0.7019608, b: 0.44313726, a: 1}
+  m_Color: {r: 0.23529412, g: 0.7019608, b: 0.44313726, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

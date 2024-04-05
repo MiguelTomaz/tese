@@ -52,14 +52,17 @@ public class GalleryController : MonoBehaviour
     public void GetGallery(int touristId)
     {
         Debug.Log("GetGallery");
+        Debug.Log("touristId: " + touristId);
         string url = apiUrl + touristId;
-        StartCoroutine(SendGetGalleryRequest(url));
+        StartCoroutine(SendGetGalleryRequest(apiUrl));
     }
 
     private List<GameObject> instantiatedPhotoObjects = new List<GameObject>();
 
-    IEnumerator SendGetGalleryRequest(string url)
+    IEnumerator SendGetGalleryRequest(string urlApi)
     {
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
+        var url = urlApi + touristId;
         ClearInstantiatedPhotoObjects();
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
@@ -109,33 +112,36 @@ public class GalleryController : MonoBehaviour
                 }
                 //Destroy(photoTemplate);
                 photoTemplate.SetActive(false);
-
-                string firstItemJson = jsonArray[0].ToString();
-                PhotoData firstPhotoData = JsonConvert.DeserializeObject<PhotoData>(firstItemJson);
-                //photoDescription.text = firstPhotoData.description;
-                //LoadImageFromBase64(firstPhotoData.image_base64, photoImage);
-
-                
-                // Inicializa a lista de PhotoData
-                List<PhotoData> gallery = new List<PhotoData>();
-
-                // Percorre cada dicionário na lista de dicionários
-                foreach (Dictionary<string, object> photoDict in photoList)
+                if(jsonArray.Count > 0)
                 {
-                    // Cria um novo objeto PhotoData e atribui os valores do dicionário a ele
-                    PhotoData photo = new PhotoData
-                    {
-                        id = (int)photoDict["id"],
-                        tourist_route_association_id = (int)photoDict["tourist_route_association_id"],
-                        description = (string)photoDict["description"],
-                        date = (string)photoDict["date"],
-                        image_hash = (string)photoDict["image_hash"],
-                        filename = (string)photoDict["filename"],
-                        image_base64 = (string)photoDict["image_base64"]
-                    };
+                    string firstItemJson = jsonArray[0].ToString();
+                    PhotoData firstPhotoData = JsonConvert.DeserializeObject<PhotoData>(firstItemJson);
+                    //photoDescription.text = firstPhotoData.description;
+                    //LoadImageFromBase64(firstPhotoData.image_base64, photoImage);
 
-                    // Adiciona o objeto PhotoData à lista de galeria
-                    gallery.Add(photo);
+
+                    // Inicializa a lista de PhotoData
+                    List<PhotoData> gallery = new List<PhotoData>();
+
+                    // Percorre cada dicionário na lista de dicionários
+                    foreach (Dictionary<string, object> photoDict in photoList)
+                    {
+                        // Cria um novo objeto PhotoData e atribui os valores do dicionário a ele
+                        PhotoData photo = new PhotoData
+                        {
+                            id = (int)photoDict["id"],
+                            tourist_route_association_id = (int)photoDict["tourist_route_association_id"],
+                            description = (string)photoDict["description"],
+                            date = (string)photoDict["date"],
+                            image_hash = (string)photoDict["image_hash"],
+                            filename = (string)photoDict["filename"],
+                            image_base64 = (string)photoDict["image_base64"]
+                        };
+
+                        // Adiciona o objeto PhotoData à lista de galeria
+                        gallery.Add(photo);
+                    }
+
                 }
 
                 galleryPanel.SetActive(true);

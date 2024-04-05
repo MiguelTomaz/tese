@@ -111,7 +111,7 @@ public class LoginController : MonoBehaviour
         // Verifica se houve algum erro na resposta
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Erro ao fazer login: " + request.error);
+            Debug.Log("Erro ao fazer login: " + request.error);
         }
         else
         {
