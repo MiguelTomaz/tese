@@ -530,7 +530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &115442411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,7 +580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &150483823
 Transform:
   m_ObjectHideFlags: 0
@@ -670,6 +670,7 @@ MonoBehaviour:
   RouteCategory: {fileID: 0}
   latitudeUserText: {fileID: 916817392}
   longitudeUserText: {fileID: 1156478500}
+  readyToUseText: {fileID: 389372712}
   currentPoiName: {fileID: 2028597679}
   currentPoiLat: {fileID: 1422643491}
   currentPoiLong: {fileID: 293178807}
@@ -700,13 +701,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185611274}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b745b11f4fb497b488f13f0acdf4127f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userLocationText: {fileID: 0}
-  cilindroUI: {fileID: 0}
+  userLocationText: {fileID: 675410337}
 --- !u!114 &185611278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,7 +1607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &484012114
 AudioListener:
   m_ObjectHideFlags: 0
@@ -4997,7 +4997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 111}
+  m_AnchoredPosition: {x: 0, y: -1048}
   m_SizeDelta: {x: 427.73, y: 151.7648}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1564409122
@@ -5420,7 +5420,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userLocationText: {fileID: 675410337}
-  cilindroUI: {fileID: 639108507}
 --- !u!1 &1655370472
 GameObject:
   m_ObjectHideFlags: 0

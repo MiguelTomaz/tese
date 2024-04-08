@@ -98,6 +98,7 @@ public class RouteExploration : MonoBehaviour
     public Text RouteCategory;
     public Text latitudeUserText;
     public Text longitudeUserText;
+    public Text readyToUseText;
 
     //current poi
     public Text currentPoiName;
@@ -115,7 +116,7 @@ public class RouteExploration : MonoBehaviour
         POI_prefabs = new Dictionary<int, GameObject>();
         POI_prefabs.Add(3, prefabLivraria);
         POI_prefabs.Add(4, prefabUni);
-        POI_prefabs.Add(8, prefabClerigos);
+        POI_prefabs.Add(5, prefabClerigos);
 
         savedLanguage = PlayerPrefs.GetString("Language", "en");
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
@@ -125,6 +126,7 @@ public class RouteExploration : MonoBehaviour
         openRouteExplorationDetailsPainelBtn.onClick.AddListener(openPainelRouteExploration);
         closeRouteExplorationDetailsPainelBtn.onClick.AddListener(closePainelRouteExploration);
         addOrderPoiTesteBtn.onClick.AddListener(addRoutePoiOrder);
+        VerifyGeospatialSupport();
     }
 
     // Update is called once per frame
@@ -199,6 +201,7 @@ public class RouteExploration : MonoBehaviour
                     int order = 0;
                     foreach (var poi in response.poiList)
                     {
+                        Debug.Log("poiListWithOrder: " + poi.name);
                         poi.Order = order;
                         poiListWithOrder.Add(poi);
                         order++;
@@ -328,6 +331,30 @@ public class RouteExploration : MonoBehaviour
         return degrees * Math.PI / 180;
     }
 
+    private void VerifyGeospatialSupport()
+    {
+        var result = earthManager.IsGeospatialModeSupported(GeospatialMode.Enabled);
+        switch (result)
+        {
+            case FeatureSupported.Supported:
+                Debug.Log("ready to use VPS");
+                readyToUseText.text = "ready to use VPS";
+                PlaceObjects();
+                break;
+
+            case FeatureSupported.Unknown:
+                Debug.Log("unknown");
+                readyToUseText.text = "unknown";
+                Invoke("VerifyGeospatialSupport", 5.0f);
+                break;
+
+            case FeatureSupported.Unsupported:
+                Debug.Log("vps unsuported");
+                readyToUseText.text = "vps unsuported";
+                break;
+        }
+    }
+
     private void PlaceObjects()
     {
         if (earthManager.EarthTrackingState == TrackingState.Tracking)
@@ -339,7 +366,7 @@ public class RouteExploration : MonoBehaviour
             {
                 var eartPosition = obj.earthPosition;
                 var objAnchor = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, eartPosition.latitude, eartPosition.longitude, eartPosition.altitude, Quaternion.identity);
-                var objAnchor2 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.756905, -7.462092, eartPosition.altitude, Quaternion.identity);
+                //var objAnchor2 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.756905, -7.462092, eartPosition.altitude, Quaternion.identity);
                 Instantiate(obj.objectPrefab, objAnchor.transform);
 
             }

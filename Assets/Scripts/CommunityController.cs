@@ -18,9 +18,9 @@ public class CommunityController : MonoBehaviour
     private double photoNumber;
     private double photoHeight = 500;
 
-    private string apiUrl = "http://localhost:3000/api/photo/community";
-    private string checkIsLikedUrl = "http://localhost:3000/api/photo/community/like/check";
-    private string likedUrl = "http://localhost:3000/api/photo/community/like";
+    private string apiUrl = "http://13.60.19.19:3000/api/photo/community";
+    private string checkIsLikedUrl = "http://13.60.19.19:3000/api/photo/community/like/check";
+    private string likedUrl = "http://13.60.19.19:3000/api/photo/community/like";
     private GameObject communityTemplate;
     public Button leaveCommunityBtn;
 

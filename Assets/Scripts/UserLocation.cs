@@ -15,7 +15,7 @@ public class UserLocation : MonoBehaviour
 
     private double latitudeObjectHouse = 41.756947;
     private double longitudeObjectHouse = -7.4620061;
-    public GameObject cilindroUI;
+    //public GameObject cilindroUI;
 
     void Start()
     {
@@ -122,6 +122,6 @@ public class UserLocation : MonoBehaviour
         float angleDegrees = angleRad * Mathf.Rad2Deg + 180f;
 
         // Define a rotação Z da imagem2Dseta
-        cilindroUI.transform.rotation = Quaternion.Euler(0f, 0f, angleDegrees);
+        //cilindroUI.transform.rotation = Quaternion.Euler(0f, 0f, angleDegrees);
     }
 }

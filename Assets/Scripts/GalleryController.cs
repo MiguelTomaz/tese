@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class GalleryController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public string apiUrl = "http://localhost:3000/api/photo/gallery/";
+    private string apiUrl = "http://13.60.19.19:3000/api/photo/gallery/";
     public Button GalleryBtn;
     public Button backBtn;
     public Image photoImage;
@@ -63,6 +63,7 @@ public class GalleryController : MonoBehaviour
     {
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
         var url = urlApi + touristId;
+        Debug.Log("url: " + url);
         ClearInstantiatedPhotoObjects();
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
