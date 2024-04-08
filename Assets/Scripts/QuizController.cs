@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class QuizController : MonoBehaviour
 {
     public Button CreateQuizButton;
-    private string quizUrl = "http://localhost:3000/api/quiz/";
-    private string questionUrl = "http://localhost:3000/api/questions/";
+    private string quizUrl = "http://13.60.19.19:3000/api/quiz/";
+    private string questionUrl = "http://13.60.19.19:3000/api/questions/";
 
 
     public GameObject quizPanel;

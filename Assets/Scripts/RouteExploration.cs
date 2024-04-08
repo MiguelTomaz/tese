@@ -88,7 +88,7 @@ public class RouteExploration : MonoBehaviour
     public Button openRouteExplorationDetailsPainelBtn;
     public Button closeRouteExplorationDetailsPainelBtn;
     private bool isEplorationBegin = false;
-    private string apiUrlRouteDetails = "http://localhost:3000/api/route/details/";
+    private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
     private List<PointOfInterest> poiListWithOrder = new List<PointOfInterest>();
     private string savedLanguage = "";
     private int routePoiCurrentOrder = 0;

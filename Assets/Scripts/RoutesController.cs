@@ -18,8 +18,8 @@ public class RoutesController : MonoBehaviour
 
     public GameObject chooseRoutesPainel;
 
-    private string apiUrlChooseRoutes = "http://localhost:3000/api/route/all";
-    private string apiUrlRouteDetails = "http://localhost:3000/api/route/details/";
+    private string apiUrlChooseRoutes = "http://13.60.19.19:3000/api/route/all";
+    private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
     private double routeHeight = 800;
     private double poiHeight = 1100;
 

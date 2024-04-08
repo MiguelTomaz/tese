@@ -42,10 +42,10 @@ public class StatsController : MonoBehaviour
     }
 
     public Button statsButton;
-    private string quizUrl = "http://localhost:3000/api/quiz/";
-    private string leaderboardUrl = "http://localhost:3000/api/photo/ranking";
-    private string poi_visitedUrl = "http://localhost:3000/api/user/poi_visited/";
-    private string photoTakenUrl = "http://localhost:3000/api/user/photo_count/";
+    private string quizUrl = "http://13.60.19.19:3000/api/quiz/";
+    private string leaderboardUrl = "http://13.60.19.19:3000/api/photo/ranking";
+    private string poi_visitedUrl = "http://13.60.19.19:3000/api/user/poi_visited/";
+    private string photoTakenUrl = "http://13.60.19.19:3000/api/user/photo_count/";
 
     public Text score;
     public Text poiVisted;

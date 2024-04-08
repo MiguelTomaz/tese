@@ -86,7 +86,7 @@ public class RegisterController : MonoBehaviour
     {
 
         // Se passou pelas verificações, faça o que for necessário para o login
-        string uri = "http://localhost:3000/api/user/add";//API_URI + "/user/login?email=" + email + "&password=" + password + "";//API_URI + "user/login";
+        string uri = "http://13.60.19.19:3000/api/user/add";//API_URI + "/user/login?email=" + email + "&password=" + password + "";//API_URI + "user/login";
         string jsonData = "{\"email\":\"" + email + "\", \"password\":\"" + password + "\"}";
 
         UnityWebRequest request = new UnityWebRequest(uri, "POST");

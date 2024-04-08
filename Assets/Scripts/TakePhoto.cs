@@ -96,7 +96,7 @@ public class TakePhoto : MonoBehaviour
     
     public void UploadPhoto(int touristRouteAssociationId, string description, DateTime date, string imageHash, string filename, string base64String)
     {
-        string url = "http://localhost:3000/api/photo/upload";
+        string url = "http://13.60.19.19:3000/api/photo/upload";
 
         // Convertendo a imagem para bytes
         Debug.Log("UploadPhoto: ");

@@ -96,7 +96,7 @@ public class LoginController : MonoBehaviour
         Debug.Log("Email e senha válidos, proceda com o login.");
         string email2 = "teste@teste.teste";
         string password2 = "123";
-        string uri = "http://localhost:3000/api/user/login";//API_URI + "/user/login?email=" + email + "&password=" + password + "";//API_URI + "user/login";
+        string uri = "http://13.60.19.19:3000/api/user/login";//API_URI + "/user/login?email=" + email + "&password=" + password + "";//API_URI + "user/login";
         string jsonData = "{\"email\":\"" + email + "\", \"password\":\"" + password + "\"}";
 
         UnityWebRequest request = new UnityWebRequest(uri, "GET");
