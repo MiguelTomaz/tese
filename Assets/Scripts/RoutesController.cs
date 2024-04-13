@@ -44,6 +44,13 @@ public class RoutesController : MonoBehaviour
     public Text selectRouteExplanation2;
     public Text selectRouteName;
 
+    [System.Serializable]
+    public class TouristicRoutesResponse
+    {
+        public bool success;
+        public string message;
+        public int touristicRouteId;
+    }
 
     [System.Serializable]
     public class Route
@@ -429,7 +436,7 @@ public class RoutesController : MonoBehaviour
 
         LoadImageFromBase64(routeImage, imageRouteSelected);
 
-        startRouteExploration.onClick.AddListener(() => ExploreRoute(routeId));
+        startRouteExploration.onClick.AddListener(() => CreateTouristicRoute(routeId));
         routeSelectPainel.SetActive(true);
     }
 
@@ -493,11 +500,54 @@ public class RoutesController : MonoBehaviour
         return degrees * Math.PI / 180;
     }
 
-    public void ExploreRoute(int routeId)
+    public void CreateTouristicRoute(int routeId)
     {
-        PlayerPrefs.SetInt("choosenRoute", routeId);
-        PlayerPrefs.Save();
-        SceneManager.LoadScene("SampleScene");
+
+        //PlayerPrefs.SetInt("choosenRoute", routeId);
+        //PlayerPrefs.Save();
+        //SceneManager.LoadScene("SampleScene");
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
+        StartCoroutine(CreateTouristicRouteCoroutine(routeId, touristId));
+    }
+
+    private IEnumerator CreateTouristicRouteCoroutine(int route_id, int tourist_id)
+    {
+        string uri = "http://13.60.19.19:3000/api/route/touristic-route/add";
+
+        WWWForm form = new WWWForm();
+        form.AddField("route_id", route_id);
+        form.AddField("tourist_id", tourist_id);
+
+        Debug.Log("add touristic route com id " + route_id + ", tourist_id: " + tourist_id);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(uri, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Erro ao registar: " + www.error);
+            }
+            else
+            {
+                string responseText = www.downloadHandler.text;
+                TouristicRoutesResponse responseData = JsonUtility.FromJson<TouristicRoutesResponse>(responseText);
+
+                if (responseData != null && responseData.message != null)
+                {
+                    Debug.Log("criação de touristic route bem sucedida " + responseData.message + ", touristic route id: " + responseData.touristicRouteId);
+                    PlayerPrefs.SetInt("choosenRoute", route_id);
+                    PlayerPrefs.SetInt("touristic_route", responseData.touristicRouteId);
+                    PlayerPrefs.Save();
+                    SceneManager.LoadScene("SampleScene");
+
+                }
+                else
+                {
+                    Debug.LogError("Erro ao touristic route: " + responseData.message);
+                }
+            }
+        }
     }
 
     public void BackFromSelectRoute()
