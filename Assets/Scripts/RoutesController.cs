@@ -135,7 +135,8 @@ public class RoutesController : MonoBehaviour
     private IEnumerator GetRoutesRequest()
     {
         Debug.Log("routes get request");
-        string url = apiUrlChooseRoutes;
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
+        string url = apiUrlChooseRoutes + "/" + touristId;
         // Envia a solicitação
         UnityWebRequest request = UnityWebRequest.Get(url);
 
