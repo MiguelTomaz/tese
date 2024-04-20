@@ -5610,7 +5610,7 @@ GameObject:
   - component: {fileID: 328314360}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18158,6 +18158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30545f1c3d55ba5488a03d9863507302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  northDirrectionTeste: 0
   goToDevModeAR: {fileID: 232844013}
   arrowNorth: {fileID: 1519864183}
   arrowPoint: {fileID: 1250385868}

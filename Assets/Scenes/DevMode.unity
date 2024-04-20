@@ -220,7 +220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &60142846
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2233,16 +2233,22 @@ MonoBehaviour:
   prefabLivraria: {fileID: 3063691710656336736, guid: 50be7e3b174e67349b1c9a1c2a0454ed, type: 3}
   prefabUni: {fileID: 5538932503960445389, guid: 2f323633bb620534f89b7a9e6818d151, type: 3}
   prefabClerigos: {fileID: 2566420571910648974, guid: 9b604b79baf143c44be6a593ff3b6a6d, type: 3}
+  addDescriptionPhotoPainel: {fileID: 0}
   arrowNorth: {fileID: 0}
   arrowPoi: {fileID: 0}
   northText: {fileID: 0}
   poiDistanceText: {fileID: 0}
+  photoDescriptionInputField: {fileID: 0}
+  coordinatesLatPoiTeste: {fileID: 0}
+  coordinatesLongPoiTeste: {fileID: 0}
   aRAnchorManager: {fileID: 0}
   geospatialObjects: []
   routeExplorationDetailsPainel: {fileID: 0}
   addOrderPoiTesteBtn: {fileID: 0}
   openRouteExplorationDetailsPainelBtn: {fileID: 0}
   closeRouteExplorationDetailsPainelBtn: {fileID: 0}
+  savePhotoButton: {fileID: 0}
+  takePhotoButton: {fileID: 0}
   exploringRouteText: {fileID: 0}
   RouteName: {fileID: 0}
   RouteCity: {fileID: 0}
@@ -2253,8 +2259,6 @@ MonoBehaviour:
   currentPoiName: {fileID: 0}
   currentPoiLat: {fileID: 0}
   currentPoiLong: {fileID: 0}
-  currentPoiLatitude: 0
-  currentPoiLongitude: 0
   currentPoiDistance: {fileID: 0}
   nextPoiName: {fileID: 0}
   nextPoiLat: {fileID: 0}
