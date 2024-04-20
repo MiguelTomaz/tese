@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using Google.XR.ARCoreExtensions;
+using TMPro;
 
 public class RouteExploration : MonoBehaviour
 {
@@ -15,6 +16,17 @@ public class RouteExploration : MonoBehaviour
     public GameObject prefabLivraria;
     public GameObject prefabUni;
     public GameObject prefabClerigos;
+
+    public GameObject arrowNorth;
+    public GameObject arrowPoi;
+    public TextMeshProUGUI northText;
+    public TextMeshProUGUI poiDistanceText;
+
+    public TextMeshProUGUI coordinatesLatPoiTeste;
+    public TextMeshProUGUI coordinatesLongPoiTeste;
+
+    private bool canStartExploration = false;
+
     public Dictionary<int, GameObject> POI_prefabs;
 
     [Serializable]
@@ -104,6 +116,8 @@ public class RouteExploration : MonoBehaviour
     public Text currentPoiName;
     public Text currentPoiLat;
     public Text currentPoiLong;
+    private double currentPoiLatitude = 0;
+    private double currentPoiLongitude = 0;
     public Text currentPoiDistance;
 
     //next poi
@@ -113,6 +127,10 @@ public class RouteExploration : MonoBehaviour
     public Text nextPoiDistance;
     void Start()
     {
+        // Ativa a bússola
+        Input.location.Start();
+        Input.compass.enabled = true;
+
         POI_prefabs = new Dictionary<int, GameObject>();
         POI_prefabs.Add(3, prefabLivraria);
         POI_prefabs.Add(4, prefabUni);
@@ -132,6 +150,112 @@ public class RouteExploration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        if(canStartExploration)
+        {
+            // Obtém a rotação da bússola
+            float magneticNorth = Input.compass.magneticHeading;
+
+            // Ajusta para a declinação magnética (se necessário)
+            float trueNorth = magneticNorth - Input.compass.trueHeading;
+            float trueNorthAarrowDirection = Input.compass.trueHeading;
+            trueNorthAarrowDirection = (float)Math.Round(trueNorthAarrowDirection, 2);
+            arrowNorth.transform.rotation = Quaternion.Euler(0f, 0f, trueNorthAarrowDirection);
+            // Orienta a câmera para o norte verdadeiro
+            transform.rotation = Quaternion.Euler(0, trueNorth, 0);
+
+
+            string latitudeString = PlayerPrefs.GetString("UserLatitude");
+            string longitudeString = PlayerPrefs.GetString("UserLongitude");
+
+            var x1 = -7.4622632;
+            var y1 = 41.7568188;
+
+            if (!string.IsNullOrEmpty(longitudeString))
+            {
+                x1 = double.Parse(longitudeString);
+            }
+
+            if (!string.IsNullOrEmpty(latitudeString))
+            {
+                y1 = double.Parse(latitudeString);
+            }
+
+            var x2 = -7.462006;
+            var y2 = 41.756947;
+
+            if (currentPoiLongitude != 0)
+            {
+                x2 = currentPoiLongitude;
+                coordinatesLongPoiTeste.text = "long poi: " + currentPoiLongitude;
+
+            }
+
+            if (currentPoiLatitude != 0)
+            {
+                y2 = currentPoiLatitude;
+                coordinatesLatPoiTeste.text = "lat poi: " + currentPoiLatitude;
+            }
+
+            double currentDistance = CalculateDistance(y1, x1, y2, x2);
+            currentPoiDistance.text = currentDistance + " m";
+
+            double delta_x = x2 - x1;
+            double delta_y = y2 - y1;
+
+            double[] vector_AB = { delta_x, delta_y };
+
+            double angle_with_x_axis = Math.Atan2(delta_y, delta_x);
+
+            // Converte o ângulo para graus
+            double angle_degrees = angle_with_x_axis * (180 / Math.PI);
+
+            //Console.WriteLine("Vetor AB: ({0}, {1})", vector_AB[0], vector_AB[1]);
+            Debug.Log("angle_degrees: " + angle_degrees);
+
+            double angle_degrees_Y = 90 - angle_degrees;
+            double anglePoint = trueNorthAarrowDirection - angle_degrees_Y;
+
+            arrowPoi.transform.rotation = Quaternion.Euler(0f, 0f, (float)anglePoint);
+
+
+            if (trueNorthAarrowDirection >= 340 || trueNorthAarrowDirection <= 20)
+            {
+                northText.text = "N";
+            }
+            else if (trueNorthAarrowDirection > 20 && trueNorthAarrowDirection <= 60)
+            {
+                northText.text = "NE";
+            }
+            else if (trueNorthAarrowDirection > 60 && trueNorthAarrowDirection <= 110)
+            {
+                northText.text = "E";
+            }
+            else if (trueNorthAarrowDirection > 110 && trueNorthAarrowDirection <= 140)
+            {
+                northText.text = "SE";
+            }
+            else if (trueNorthAarrowDirection > 140 && trueNorthAarrowDirection <= 200)
+            {
+                northText.text = "S";
+            }
+            else if (trueNorthAarrowDirection > 200 && trueNorthAarrowDirection <= 240)
+            {
+                northText.text = "SW";
+            }
+            else if (trueNorthAarrowDirection > 240 && trueNorthAarrowDirection <= 290)
+            {
+                northText.text = "W";
+            }
+            else if (trueNorthAarrowDirection > 290 && trueNorthAarrowDirection < 340)
+            {
+                northText.text = "NW";
+            }
+        }
+        else
+        {
+            coordinatesLongPoiTeste.text = "error";
+        }
         
     }
 
@@ -236,6 +360,10 @@ public class RouteExploration : MonoBehaviour
                         currentPoiName.text = poi.name;
                         currentPoiLat.text = "lat: " + poi.latitude;
                         currentPoiLong.text = "long: " +poi.longitude;
+
+                        currentPoiLatitude = poi.latitude;
+                        currentPoiLongitude = poi.longitude;
+
                         double currentDistance = CalculateDistance(latitudeUser, longitudeUser, poi.latitude, poi.longitude);
                         string message = "";
                         if (savedLanguage == "en")
@@ -359,6 +487,7 @@ public class RouteExploration : MonoBehaviour
     {
         if (earthManager.EarthTrackingState == TrackingState.Tracking)
         {
+            readyToUseText.text = "";
             var geospatialPose = earthManager.CameraGeospatialPose;
 
 
@@ -368,7 +497,7 @@ public class RouteExploration : MonoBehaviour
                 var objAnchor = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, eartPosition.latitude, eartPosition.longitude, eartPosition.altitude, Quaternion.identity);
                 //var objAnchor2 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.756905, -7.462092, eartPosition.altitude, Quaternion.identity);
                 Instantiate(obj.objectPrefab, objAnchor.transform);
-
+                canStartExploration = true;
             }
         }
 

@@ -412,7 +412,7 @@ public class RoutesController : MonoBehaviour
 
         if (!isCheckingDistance)
         {
-            StartCoroutine(CheckDistanceCoroutine(latitudeUser, longitudeUser, latitudePoi, longitudePoi));
+            //StartCoroutine(CheckDistanceCoroutine(latitudeUser, longitudeUser, latitudePoi, longitudePoi));
         }
 
         //bool isUserCloseToPoi = IsWithinDistance(latitudeUser, longitudeUser, latitudePoi, longitudePoi, 5);
@@ -446,6 +446,7 @@ public class RoutesController : MonoBehaviour
         while (isCheckingDistance)
         {
             bool isUserClose = IsWithinDistance(latitudeUser, longitudeUser, latitudePoi, longitudePoi, 5);
+
             if (isUserClose)
             {
                 Debug.Log("O usuário está perto do ponto de interesse.");

@@ -51,7 +51,7 @@ public class UserLocation : MonoBehaviour
 
         //start service
         Input.location.Start();
-        userLocationText.text = "loading map...please wait";
+        userLocationText.text = "loading location...please wait";
         //wait until service initialize
         int maxWait = 20;
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
@@ -94,7 +94,7 @@ public class UserLocation : MonoBehaviour
             lon = Input.location.lastData.longitude;
             lat = Input.location.lastData.latitude;
 
-            userLocationText.text = "lon: " + lon + ", lat: " + lat;
+            userLocationText.text = "";
             PlayerPrefs.SetString("UserLatitude", lat.ToString());
             PlayerPrefs.SetString("UserLongitude", lon.ToString());
             PlayerPrefs.Save();
