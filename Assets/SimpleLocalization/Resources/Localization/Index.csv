@@ -1,2 +1,40 @@
 Key,English,Portuguese
-Index.Login,Login1,Login2
+Index.Login,Login,Conectar
+Index.RegisterIndex,Don't have an account? Register now!,Não tem uma conta? Registe-se agora!
+Index.About,About Us,Sobre Nós
+Index.Leave,Leave,Sair
+Index.ForgotPassword,I forgot my password,Esqueci a minha palavra-passe
+Index.Back,Back,Voltar
+Index.Register,Register,Registar
+Index.ChooseRoute,Choose a Tourist Route,Escolha uma rota turística
+Index.CreateRoute,Create your Tourist Route,Crie a sua Rota Turística
+Index.Gallery,Your Gallery,Sua galeria
+Index.Language,Choose language,Escolha o idioma
+Index.ContactUs,Contact Us,Contate-nos
+Index.ChangePassword,Change Password,Alterar a palavra-passe
+Index.Logout,Logout,Desconectar-se
+Index.Stats,Your Stats,As suas Estatísticas
+Index.PoiVisited,POI visited,POI visitados
+Index.PicturesTaken,Pictures Taken,Fotos tiradas
+Index.QuizPoint,Quiz Points,Pontos do quiz
+Index.Leaderboard,Leaderboard,Tabela de classificação
+Index.Email,Email,Email
+Index.Teste,"Este é um exemplo""&CHAR(10)&""de texto com várias""&CHAR(10)&""linhas.",
+Index.Community,Community,Comunidade
+Index.Date,Date,Data
+Index.Likes,Likes,Gostos
+Index.quizList,List of Quiz,Lista de Quiz
+Index.YourGallery,Your Gallery,Sua galeria
+Index.Select,Select,Selecionar
+Index.Details,Details,Detalhes
+Index.Step1,Step1/2,Passo 1/2
+Index.Step2,Step 2/2,Passo 2/2
+Index.InsertRouteName,Insert the route name,Insira o nome da rota
+Index.InsertRouteCity,Insert the route city,Insira a cidade da rota
+Index.InsertRouteCategory,Insert the route category,Insira a categoria da rota
+Index.Next,Next,Seguinte
+Index.Cancel,Cancel,Cancelar
+Index.InsertPoi,Select the POI that you want to add to your route from the list,Selecione o POI que deseja adicionar à sua rota na lista
+Index.POI_list,POI List,Lista de POIs
+Index.AddToRoute,Add to your Route,Adicione à sua rota
+Index.Finish,Finish,Finalizar
