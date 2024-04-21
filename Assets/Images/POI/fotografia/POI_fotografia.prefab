@@ -619,7 +619,7 @@ Transform:
   - {fileID: 6969505810360616919}
   - {fileID: 6969505810102810575}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6969505809549798207
 GameObject:
@@ -1829,7 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c90b81a486db9408a810b5256efeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationKey: Index.POI_opening_hours_title
+  LocalizationKey: Index.OpeningHours
 --- !u!1 &6969505809892866482
 GameObject:
   m_ObjectHideFlags: 0
@@ -2963,11 +2963,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Located in the building that served as a prison, the Cadeia da Rec\xE7\xE3o,
-    this museum houses a large part of the country's photographic heritage, preserving
-    and disseminating the history of photography in Portugal over the centuries.\L\L\LIt
-    was created in 1997 and is currently one of the most important photographic preservation
-    centers in Portugal."
+  m_text: "Situado no edif\xEDcio que serviu de pris\xE3o, a Cadeia da Rec\xE7\xE3o,
+    este museu alberga grande parte do patrim\xF3nio fotogr\xE1fico do pa\xEDs, preservando
+    e divulgando a hist\xF3ria da fotografia em Portugal ao longo dos s\xE9culos.
+    Foi criado em 1997 e \xE9 atualmente um dos mais importantes centros de preserva\xE7\xE3o
+    fotogr\xE1fica de Portugal."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3937,7 +3937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c90b81a486db9408a810b5256efeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationKey: Index.POI_opening_hours_value
+  LocalizationKey: Index.POI_foto_opening_hours_value
 --- !u!1 &6969505810775338072
 GameObject:
   m_ObjectHideFlags: 0
