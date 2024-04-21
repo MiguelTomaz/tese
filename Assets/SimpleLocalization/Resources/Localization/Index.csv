@@ -41,3 +41,13 @@ Index.Finish,Finish,Finalizar
 Index.City,CITY,CIDADE
 Index.Category,CATEGORY,CATEGORIA
 Index.Exit,EXIT,SAIR
+Index.YourLocation,Your location,Sua localização
+Index.CurrentPOI,Current POI,POI atual
+Index.NextPOI,Next POI,POI seguinte
+Index.ExploreRoute,Explore Route,Explorar Rota
+Index.RouteDetails,Route Details,Detalhes da Rota
+Index.CurrentPoiDetails,Current POI Details,Detalhes do POI atual
+Index.QuitExploration,Quit Exploration,Sair da exploração
+Index.SavePhoto,Save Photo,Salvar foto
+Index.SavePhotoDescription,You just took a photo. Add a description and click save. You can view your photo in the app's gallery or community,Você acabou de tirar uma foto. Adicione uma descrição e clique em salvar. Você pode ver sua foto na galeria ou na comunidade da app
+Index.Save,Save,Salvar
