@@ -38,3 +38,6 @@ Index.InsertPoi,Select the POI that you want to add to your route from the list,
 Index.POI_list,POI List,Lista de POIs
 Index.AddToRoute,Add to your Route,Adicione à sua rota
 Index.Finish,Finish,Finalizar
+Index.City,CITY,CIDADE
+Index.Category,CATEGORY,CATEGORIA
+Index.Exit,EXIT,SAIR
