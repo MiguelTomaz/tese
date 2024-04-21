@@ -170,7 +170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Porto puppet museum
+  m_text: Museu de Marionetas do Porto
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -692,7 +692,7 @@ Transform:
   - {fileID: 7016023915894362271}
   - {fileID: 7016023916811390484}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7016023915483440956
 GameObject:
@@ -1387,7 +1387,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 19.64464, y: 0.5500869, z: 25.022243, w: -8.20412}
+  m_margin: {x: 19.64464, y: 0.5500869, z: 22.780884, w: -8.20412}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1559,10 +1559,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This museum explores \La world full of puppets, where visitors are taken
+  m_text: This museum explores a world full of puppets, where visitors are taken
     on a journey through the universe of the Teatro de Marionetas do Porto, remembering
     memorable moments from the shows and having the unique opportunity to manipulate
-    puppets, ending the visit with a touch of fantasy and fun"
+    puppets, ending the visit with a touch of fantasy and fun
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2799,7 +2799,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 19.64464, y: 0.5500869, z: 25.022243, w: -8.20412}
+  m_margin: {x: 19.64464, y: 0.5500869, z: 16.379023, w: -8.20412}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3193,9 +3193,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Saturday \L11:00\u201313:00, 14:00\u201318:00\nSunday \L11:00\u201313:00,
-    14:00\u201318:00\nMonday Closed\nTuesday Closed\nWednesday 14:00\u201318:00\nThursday
-    14:00\u201318:00\nFriday 14:00\u201318:00"
+  m_text: "S\xE1bado, das 11h00 \xE0s 13h00, das 14h00 \xE0s 18h00\nDomingo, das
+    11h00 \xE0s 13h00, das 14h00 \xE0s 18h00\nSegunda-feira Fechado\nTer\xE7a-feira
+    Fechado\nQuarta-feira, das 14h00 \xE0s 18h00\nQuinta-feira, 14h00-18h00\nSexta-feira,
+    das 14h00 \xE0s 18h00"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3978,7 +3979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c90b81a486db9408a810b5256efeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationKey: Index.POI_marionetas_hours_title
+  LocalizationKey: Index.OpeningHours
 --- !u!1 &7016023916927825095
 GameObject:
   m_ObjectHideFlags: 0
