@@ -248,7 +248,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.3}
-  m_SizeDelta: {x: 88.353, y: 23.9432}
+  m_SizeDelta: {x: 68.2152, y: 23.9432}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1511128372168778894
 CanvasRenderer:
@@ -1340,8 +1340,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00000011921, y: -0.335}
-  m_SizeDelta: {x: 88.353, y: 75.7157}
+  m_AnchoredPosition: {x: 0.0122, y: -0.4345}
+  m_SizeDelta: {x: 90.7932, y: 95.6131}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1511128372526992487
 CanvasRenderer:
@@ -1712,7 +1712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c90b81a486db9408a810b5256efeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationKey: Index.POI_cidade_opening_hours_title
+  LocalizationKey: Index.OpeningHours
 --- !u!1 &1511128372712484331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2700,7 +2700,7 @@ Transform:
   - {fileID: 1511128372136058226}
   - {fileID: 1511128373178029337}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1511128373390770403
 GameObject:
@@ -3170,8 +3170,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.012, y: -0.039}
-  m_SizeDelta: {x: 88.353, y: 73.1889}
+  m_AnchoredPosition: {x: 0.048, y: -0.079}
+  m_SizeDelta: {x: 89.952, y: 78.519}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1511128373703740316
 CanvasRenderer:
@@ -3201,13 +3201,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Built in 1325, Casa do Infante is so named because D. Henrique, the Navigator,
-    was presumably born there.
-
-
-    The building, one of the oldest in the city,
-    was also the largest in size, especially due to the two towers built in the 14th
-    century, which have long since disappeared. '
+  m_text: "Constru\xEDda em 1325, a Casa do Infante tem esse nome porque ali ter\xE1
+    nascido D. Henrique, o Navegador.\n\nO edif\xEDcio, um dos mais antigos da cidade,
+    era tamb\xE9m o maior em dimens\xE3o, sobretudo devido \xE0s duas torres constru\xEDdas
+    no s\xE9culo XIV, h\xE1 muito desaparecidas."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3234,8 +3231,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4.5
+  m_fontSizeBase: 4.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3270,7 +3267,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -4.6274605, y: 0.5500869, z: -0.75774574, w: -8.20412}
+  m_margin: {x: -4.6274605, y: 0.5500869, z: 10.835207, w: -8.20412}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
