@@ -1004,6 +1004,7 @@ MonoBehaviour:
   photoAddedSuccessMessage: {fileID: 1612310835}
   photoAddedErrorMesage: {fileID: 640880538}
   currentPoiDetailsName: {fileID: 1076708487}
+  poiContainerRouteDetails: {fileID: 109084054}
   aRAnchorManager: {fileID: 150483825}
   geospatialObjects: []
   routeExplorationDetailsPainel: {fileID: 1622495422}
@@ -5467,7 +5468,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 160
+    m_FontSize: 100
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1

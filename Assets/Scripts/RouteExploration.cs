@@ -35,8 +35,12 @@ public class RouteExploration : MonoBehaviour
     public Text photoAddedSuccessMessage;
     public Text photoAddedErrorMesage;
     public Text currentPoiDetailsName;
+    public GameObject poiContainerRouteDetails;
+    private GameObject poiTemplateRouteDetails;
 
     private bool canStartExploration = false;
+    private double poiHeight = 1100;
+    private double poiNumber;
 
     public Dictionary<int, GameObject> POI_prefabs;
 
@@ -322,6 +326,7 @@ public class RouteExploration : MonoBehaviour
         StartCoroutine(GetRoutesDetailsRequest(id));
     }
 
+    private List<GameObject> instantiatedPOIObjects = new List<GameObject>();
     private IEnumerator GetRoutesDetailsRequest(int id)
     {
 
@@ -349,6 +354,22 @@ public class RouteExploration : MonoBehaviour
                 RouteName.text = response.route.name;
                 RouteCity.text = response.route.city;
                 RouteCategory.text = response.route.category;
+
+                poiTemplateRouteDetails = poiContainerRouteDetails.transform.GetChild(0).gameObject;
+                GameObject p;
+                foreach (var poi in response.poiList)
+                {
+                    Debug.Log("ID do poi: " + poi.id);
+                    Debug.Log("Nome do poi: " + poi.name);
+                    p = Instantiate(poiTemplateRouteDetails, poiContainerRouteDetails.transform);
+                    poiNumber = response.poiList.Count;
+                    AdjustContainerPOIHeight(poiNumber);
+                    p.transform.GetChild(0).GetComponent<Text>().text = poi.name;
+                    p.transform.GetChild(2).GetComponent<Text>().text = poi.description;
+
+                    instantiatedPOIObjects.Add(p);
+                }
+                poiTemplateRouteDetails.SetActive(false);
 
                 string exploringRoute = "";
                 string savedLanguage = PlayerPrefs.GetString("Language", "en");
@@ -752,5 +773,21 @@ public class RouteExploration : MonoBehaviour
     void closeCurrentPoiDetailsPainel()
     {
         currentPoiDetailsPainel.SetActive(false);
+    }
+
+    void AdjustContainerPOIHeight(double numberElements)
+    {
+        double totalHeight = numberElements * poiHeight + (numberElements - 1) * 50; // Calculating total height
+        RectTransform containerRectTransform = poiContainerRouteDetails.GetComponent<RectTransform>();
+        containerRectTransform.sizeDelta = new Vector2(containerRectTransform.sizeDelta.x, (float)totalHeight);
+    }
+
+    private void ClearInstantiatedPOIObjects()
+    {
+        foreach (GameObject obj in instantiatedPOIObjects)
+        {
+            Destroy(obj);
+        }
+        instantiatedPOIObjects.Clear();
     }
 }
