@@ -18,6 +18,7 @@ public class RouteExploration : MonoBehaviour
     public GameObject prefabUni;
     public GameObject prefabClerigos;
     public GameObject addDescriptionPhotoPainel;
+    public GameObject routeDetailsPainel;
 
     public GameObject arrowNorth;
     public GameObject arrowPoi;
@@ -109,11 +110,14 @@ public class RouteExploration : MonoBehaviour
     public Button savePhotoButton;
     public Button takePhotoButton;
     public Button closeTakePhotoButton;
+    public Button openRouteDetailsButton;
+    public Button closeRouteDetailsButton;
     private bool isEplorationBegin = false;
     private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
     private List<PointOfInterest> poiListWithOrder = new List<PointOfInterest>();
     private string savedLanguage = "";
     private int touristRouteId;
+    private int choosenRoute;
 
     private int routePoiCurrentOrder = 0;
     public Text exploringRouteText;
@@ -154,7 +158,7 @@ public class RouteExploration : MonoBehaviour
 
         savedLanguage = PlayerPrefs.GetString("Language", "en");
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
-        int choosenRoute = PlayerPrefs.GetInt("choosenRoute", -1); // -1 é o valor padrão se a chave "UserID" não existir
+        choosenRoute = PlayerPrefs.GetInt("choosenRoute", -1); // -1 é o valor padrão se a chave "UserID" não existir
 
         touristRouteId = PlayerPrefs.GetInt("touristic_route", -1);
 
@@ -170,6 +174,9 @@ public class RouteExploration : MonoBehaviour
 
         closeTakePhotoButton.onClick.RemoveListener(closeTakePhoto);
         closeTakePhotoButton.onClick.AddListener(closeTakePhoto);
+
+        openRouteDetailsButton.onClick.AddListener(openRouteDetailsPainel);
+        closeRouteDetailsButton.onClick.AddListener(closeRouteDetailsPainel);
     }
 
     // Update is called once per frame
@@ -286,6 +293,10 @@ public class RouteExploration : MonoBehaviour
 
     private void GetRouteDetails(int id)
     {
+        if(choosenRoute == -1)
+        {
+            choosenRoute = 2;
+        }
         openRouteExplorationDetailsPainelBtn.gameObject.SetActive(false);
         StartCoroutine(GetRoutesDetailsRequest(id));
     }
@@ -312,6 +323,12 @@ public class RouteExploration : MonoBehaviour
 
             if (response != null)
             {
+                Debug.Log("route: " + choosenRoute);
+                Debug.Log("route name " + response.route.name);
+                RouteName.text = response.route.name;
+                RouteCity.text = response.route.city;
+                RouteCategory.text = response.route.category;
+
                 string exploringRoute = "";
                 string savedLanguage = PlayerPrefs.GetString("Language", "en");
                 if (savedLanguage == "en")
@@ -694,5 +711,15 @@ public class RouteExploration : MonoBehaviour
     void closeTakePhoto()
     {
         addDescriptionPhotoPainel.SetActive(false);
+    }
+
+    void openRouteDetailsPainel()
+    {
+        routeDetailsPainel.SetActive(true);
+    }
+
+    void closeRouteDetailsPainel()
+    {
+        routeDetailsPainel.SetActive(false);
     }
 }
