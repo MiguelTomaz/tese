@@ -9,18 +9,28 @@ public class MultiLanguage : MonoBehaviour
     // Start is called before the first frame update
     public Dropdown languageDropdown;
     public Dropdown languageDropdown2;
+    public Dropdown languageDropdownExplorationScene;
 
     private void Start()
     {
-        languageDropdown.onValueChanged.AddListener(delegate {
-            DropdownValueChanged(languageDropdown, languageDropdown2);
-        });
+        if(languageDropdown != null && languageDropdown2 != null)
+        {
+            languageDropdown.onValueChanged.AddListener(delegate {
+                DropdownValueChanged(languageDropdown, languageDropdown2);
+            });
+        }
+        
     }
     private void Awake()
     {
         LocalizationManager.Read();
         //LocalizationManager.Language = "Portuguese";
         if (languageDropdown != null && languageDropdown.value != 0)
+        {
+            LocalizationManager.Language = "English";
+        }
+
+        if (languageDropdownExplorationScene != null && languageDropdownExplorationScene.value != 0)
         {
             LocalizationManager.Language = "English";
         }
@@ -35,6 +45,12 @@ public class MultiLanguage : MonoBehaviour
         {
             Debug.Log("mudar lingua");
             languageDropdown2.onValueChanged.AddListener(OnDropdownValueChanged);
+        }
+
+        if (languageDropdownExplorationScene != null)
+        {
+            Debug.Log("mudar lingua exploration");
+            languageDropdownExplorationScene.onValueChanged.AddListener(OnDropdownValueChanged);
         }
     }
 
