@@ -29,6 +29,9 @@ public class RouteExploration : MonoBehaviour
     public TextMeshProUGUI coordinatesLongPoiTeste;
     public TextMeshProUGUI clickPhotoTest;
 
+    public Text photoAddedSuccessMessage;
+    public Text photoAddedErrorMesage;
+
     private bool canStartExploration = false;
 
     public Dictionary<int, GameObject> POI_prefabs;
@@ -136,6 +139,9 @@ public class RouteExploration : MonoBehaviour
     public Text nextPoiDistance;
     void Start()
     {
+        photoAddedSuccessMessage.gameObject.SetActive(false);
+        photoAddedErrorMesage.gameObject.SetActive(false);
+
         addDescriptionPhotoPainel.SetActive(false);
         // Ativa a bússola
         Input.location.Start();
@@ -566,34 +572,20 @@ public class RouteExploration : MonoBehaviour
         // Replace the original active Render Texture.
         RenderTexture.active = currentRT;
 
-        //savePhoto(image, rt);
-        //savePhotoButton.onClick.AddListener(() => savePhoto(image, rt));
+ 
         clickPhotoTest.text = "clicou photo 4";
         byte[] bytes = image.EncodeToPNG();
         Debug.Log("bytes: " + bytes);
         string base64String = Convert.ToBase64String(bytes);
-        //System.IO.File.WriteAllText("base64.txt", base64String);
-        //string filePathBase64 = @"D:\uni\tese\rep\base64\base64.txt"; // Caminho completo do arquivo de texto
-        //System.IO.File.WriteAllText(filePathBase64, base64String);
+        
         string filename = DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
         Debug.Log("filename: " + filename);
         string imageHash = CalculateImageHash(image);
         Debug.Log("imageHash: " + imageHash);
-        //string filePath = Application.persistentDataPath + "/" + filename;
-        //string directoryName = "PhotosTaken";
-
-        //string directoryPath = @"D:\uni\tese\rep\photos_teste";
-
-        // Combine o caminho do diretório com o caminho do arquivo.
-        //string filePath = Path.Combine("Assets", directoryPath, DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png");
-        //Debug.Log("filePath: " + filePath);
-        //System.IO.File.WriteAllBytes(filePath, bytes);
-
-
-        //addDescriptionPhotoPainel.SetActive(true);
-        //SubmitPhotoWithDescription(imageHash, filename, base64String);
+       
 
         clickPhotoTest.text = "clicou photo 5";
+        savePhotoButton.onClick.RemoveAllListeners();
         savePhotoButton.onClick.AddListener(() => { SubmitPhotoWithDescription(imageHash, filename, base64String); });
 
         Destroy(rt);
@@ -606,6 +598,10 @@ public class RouteExploration : MonoBehaviour
         clickPhotoTest.text = "clicou photo 6";
         //send this to save descriptino painel button
         int touristicRouteId = touristRouteId;
+        if(touristicRouteId == -1)
+        {
+            touristicRouteId = 11;
+        }
         string description = photoDescriptionInputField.text;
         if(string.IsNullOrEmpty(description))
         {
@@ -678,11 +674,19 @@ public class RouteExploration : MonoBehaviour
             {
                 Debug.LogError("Erro ao enviar a foto: " + www.error);
                 clickPhotoTest.text = "clicou photo 11";
+
+                photoAddedErrorMesage.gameObject.SetActive(true);
+                yield return new WaitForSeconds(3f); // Exibir por 3 segundos
+                photoAddedErrorMesage.gameObject.SetActive(false);
             }
             else
             {
                 clickPhotoTest.text = "foto enviada";
                 Debug.Log("Foto enviada com sucesso!");
+
+                photoAddedSuccessMessage.gameObject.SetActive(true);
+                yield return new WaitForSeconds(3f); // Exibir por 3 segundos
+                photoAddedSuccessMessage.gameObject.SetActive(false);
             }
         }
     }
