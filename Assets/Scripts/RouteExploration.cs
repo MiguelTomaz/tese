@@ -19,6 +19,8 @@ public class RouteExploration : MonoBehaviour
     public GameObject prefabClerigos;
     public GameObject addDescriptionPhotoPainel;
     public GameObject routeDetailsPainel;
+    public GameObject currentPoiDetailsPainel;
+    public GameObject livrariaPoiDetails;
 
     public GameObject arrowNorth;
     public GameObject arrowPoi;
@@ -32,6 +34,7 @@ public class RouteExploration : MonoBehaviour
 
     public Text photoAddedSuccessMessage;
     public Text photoAddedErrorMesage;
+    public Text currentPoiDetailsName;
 
     private bool canStartExploration = false;
 
@@ -112,6 +115,8 @@ public class RouteExploration : MonoBehaviour
     public Button closeTakePhotoButton;
     public Button openRouteDetailsButton;
     public Button closeRouteDetailsButton;
+    public Button openCurrentPoiDetails;
+    public Button closeCurrentPoiDetails;
     private bool isEplorationBegin = false;
     private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
     private List<PointOfInterest> poiListWithOrder = new List<PointOfInterest>();
@@ -145,6 +150,7 @@ public class RouteExploration : MonoBehaviour
     {
         photoAddedSuccessMessage.gameObject.SetActive(false);
         photoAddedErrorMesage.gameObject.SetActive(false);
+        currentPoiDetailsPainel.SetActive(false);
 
         addDescriptionPhotoPainel.SetActive(false);
         // Ativa a bússola
@@ -177,13 +183,28 @@ public class RouteExploration : MonoBehaviour
 
         openRouteDetailsButton.onClick.AddListener(openRouteDetailsPainel);
         closeRouteDetailsButton.onClick.AddListener(closeRouteDetailsPainel);
+
+        openCurrentPoiDetails.onClick.AddListener(openCurrentPoiDetailsPainel);
+        closeCurrentPoiDetails.onClick.AddListener(closeCurrentPoiDetailsPainel);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        if(canStartExploration)
+        foreach (var poi in poiListWithOrder)
+        {
+            if (poi.Order == routePoiCurrentOrder)
+            {
+                if (poi.id == 3) //liv teste
+                {
+                    livrariaPoiDetails.SetActive(true);
+                }
+                currentPoiDetailsName.text = poi.name;
+            }
+
+        }
+
+        if (canStartExploration)
         {
             // Obtém a rotação da bússola
             float magneticNorth = Input.compass.magneticHeading;
@@ -721,5 +742,15 @@ public class RouteExploration : MonoBehaviour
     void closeRouteDetailsPainel()
     {
         routeDetailsPainel.SetActive(false);
+    }
+
+    void openCurrentPoiDetailsPainel()
+    {
+        currentPoiDetailsPainel.SetActive(true);
+    }
+
+    void closeCurrentPoiDetailsPainel()
+    {
+        currentPoiDetailsPainel.SetActive(false);
     }
 }
