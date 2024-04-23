@@ -255,7 +255,8 @@ public class RouteExploration : MonoBehaviour
             }
 
             double currentDistance = CalculateDistance(y1, x1, y2, x2);
-            poiDistancePointerText.text = currentDistance + " m";
+            int roundedDistance = (int)Math.Floor(currentDistance);
+            poiDistancePointerText.text = roundedDistance + " m";
 
             double delta_x = x2 - x1;
             double delta_y = y2 - y1;
@@ -449,14 +450,15 @@ public class RouteExploration : MonoBehaviour
                         currentPoiLongitude = poi.longitude;
 
                         double currentDistance = CalculateDistance(latitudeUser, longitudeUser, poi.latitude, poi.longitude);
+                        int roundedDistance = (int)Math.Floor(currentDistance);
                         string message = "";
                         if (savedLanguage == "en")
                         {
-                            message = "Your distance to the current POI: " + currentDistance.ToString("F2") + " m";
+                            message = "Your distance to the current POI: " + roundedDistance + " m";
                         }
                         else
                         {
-                            message = "A tua distancia ao POI atual: " + currentDistance.ToString("F2") + " m";
+                            message = "A tua distancia ao POI atual: " + roundedDistance + " m";
                         }
                         Debug.Log("distancia current: " + currentDistance);
                         currentPoiDistance.text = message;
@@ -469,13 +471,14 @@ public class RouteExploration : MonoBehaviour
                         nextPoiLong.text = "long: " + poi.longitude;
                         string message = "";
                         double nextDistance = CalculateDistance(latitudeUser, longitudeUser, poi.latitude, poi.longitude);
+                        int roundedDistance = (int)Math.Floor(nextDistance);
                         if (savedLanguage == "en")
                         {
-                            message = "Your distance to the next POI: " + nextDistance.ToString("F2") + " m";
+                            message = "Your distance to the next POI: " + roundedDistance + " m";
                         }
                         else
                         {
-                            message = "A tua distancia ao POI seguinte: " + nextDistance.ToString("F2") + " m";
+                            message = "A tua distancia ao POI seguinte: " + roundedDistance + " m";
                         }
                         nextPoiDistance.text = message;
                     }
