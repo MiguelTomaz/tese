@@ -363,10 +363,728 @@ public class QuizController : MonoBehaviour
                 Debug.Log("chegou ao fim mas nao deu para colocar eventos nso botoes");
             }
             */
+
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+            /**
             answer1Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
             answer2Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
             answer3Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
             answer4Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, question2.score)));
+            */
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(questions[2].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(questions[2].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(questions[2].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion3(questions[2].id, questions, question2.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion3(int questionId, List<Question> questions, int score = 0)
+    {
+       
+        totalScore += score;
+        Debug.Log("get question 3: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question3 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question3.id + ", Question: " + question3.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question3.question_en;
+                answer1.text = question3.answer1_en;
+                answer2.text = question3.answer2_en;
+                answer3.text = question3.answer3_en;
+                correctAnswer.text = question3.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question3.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question3.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question3.question_pt;
+                answer1.text = question3.answer1_pt;
+                answer2.text = question3.answer2_pt;
+                answer3.text = question3.answer3_pt;
+                correctAnswer.text = question3.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question3.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question3.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            
+            
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion4(questions[3].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion4(questions[3].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion4(questions[3].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion4(questions[3].id, questions, question3.score)));
+
+        }
+    }
+
+    private IEnumerator GetQuestion4(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 4: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question4 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question4.id + ", Question: " + question4.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question4.question_en;
+                answer1.text = question4.answer1_en;
+                answer2.text = question4.answer2_en;
+                answer3.text = question4.answer3_en;
+                correctAnswer.text = question4.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question4.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question4.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question4.question_pt;
+                answer1.text = question4.answer1_pt;
+                answer2.text = question4.answer2_pt;
+                answer3.text = question4.answer3_pt;
+                correctAnswer.text = question4.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question4.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question4.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion5(questions[4].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion5(questions[4].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion5(questions[4].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion5(questions[4].id, questions, question4.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion5(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 5: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question5 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question5.id + ", Question: " + question5.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question5.question_en;
+                answer1.text = question5.answer1_en;
+                answer2.text = question5.answer2_en;
+                answer3.text = question5.answer3_en;
+                correctAnswer.text = question5.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question5.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question5.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question5.question_pt;
+                answer1.text = question5.answer1_pt;
+                answer2.text = question5.answer2_pt;
+                answer3.text = question5.answer3_pt;
+                correctAnswer.text = question5.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question5.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question5.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion6(questions[5].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion6(questions[5].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion6(questions[5].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion6(questions[5].id, questions, question5.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion6(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 6: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question6 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question6.id + ", Question: " + question6.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question6.question_en;
+                answer1.text = question6.answer1_en;
+                answer2.text = question6.answer2_en;
+                answer3.text = question6.answer3_en;
+                correctAnswer.text = question6.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question6.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question6.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question6.question_pt;
+                answer1.text = question6.answer1_pt;
+                answer2.text = question6.answer2_pt;
+                answer3.text = question6.answer3_pt;
+                correctAnswer.text = question6.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question6.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question6.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion7(questions[6].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion7(questions[6].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion7(questions[6].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion7(questions[6].id, questions, question6.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion7(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 7: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question7 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question7.id + ", Question: " + question7.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question7.question_en;
+                answer1.text = question7.answer1_en;
+                answer2.text = question7.answer2_en;
+                answer3.text = question7.answer3_en;
+                correctAnswer.text = question7.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question7.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question7.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question7.question_pt;
+                answer1.text = question7.answer1_pt;
+                answer2.text = question7.answer2_pt;
+                answer3.text = question7.answer3_pt;
+                correctAnswer.text = question7.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question7.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question7.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion8(questions[7].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion8(questions[7].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion8(questions[7].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion8(questions[7].id, questions, question7.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion8(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 8: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question8 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question8.id + ", Question: " + question8.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question8.question_en;
+                answer1.text = question8.answer1_en;
+                answer2.text = question8.answer2_en;
+                answer3.text = question8.answer3_en;
+                correctAnswer.text = question8.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question8.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question8.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question8.question_pt;
+                answer1.text = question8.answer1_pt;
+                answer2.text = question8.answer2_pt;
+                answer3.text = question8.answer3_pt;
+                correctAnswer.text = question8.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question8.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question8.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion9(questions[8].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion9(questions[8].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion9(questions[8].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion9(questions[8].id, questions, question8.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion9(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 9: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question9 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question9.id + ", Question: " + question9.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question9.question_en;
+                answer1.text = question9.answer1_en;
+                answer2.text = question9.answer2_en;
+                answer3.text = question9.answer3_en;
+                correctAnswer.text = question9.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question9.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question9.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question9.question_pt;
+                answer1.text = question9.answer1_pt;
+                answer2.text = question9.answer2_pt;
+                answer3.text = question9.answer3_pt;
+                correctAnswer.text = question9.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question9.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question9.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetQuestion10(questions[9].id, questions)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetQuestion10(questions[9].id, questions)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetQuestion10(questions[9].id, questions)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetQuestion10(questions[9].id, questions, question9.score)));
+        }
+    }
+
+    private IEnumerator GetQuestion10(int questionId, List<Question> questions, int score = 0)
+    {
+
+        totalScore += score;
+        Debug.Log("get question 10: " + totalScore);
+        // Monta a URL com o ID da pergunta
+        string url = questionUrl + questionId;
+
+        // Cria a solicitação HTTP GET
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        // Envia a solicitação
+        yield return request.SendWebRequest();
+
+        // Verifica se ocorreu algum erro na solicitação
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch question: " + request.error);
+        }
+        else
+        {
+            // Parse a resposta JSON para a classe Question
+            Question question10 = JsonUtility.FromJson<Question>(request.downloadHandler.text);
+
+            // Faça algo com a pergunta, como exibir na tela
+            Debug.Log("Question ID: " + question10.id + ", Question: " + question10.question_en);
+
+            string savedLanguage = PlayerPrefs.GetString("Language", "en");
+            Debug.Log("savedLanguage: " + savedLanguage);
+
+            if (savedLanguage == "en")
+            {
+                Debug.Log("O idioma recuperado é ingles.");
+                question.text = question10.question_en;
+                answer1.text = question10.answer1_en;
+                answer2.text = question10.answer2_en;
+                answer3.text = question10.answer3_en;
+                correctAnswer.text = question10.correct_answer_en;
+                questionNumber.text = 2 + "";
+                if (question10.difficulty == 1)
+                {
+                    difficulty.text = "easy";
+                }
+                else if (question10.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "hard";
+                }
+            }
+            else
+            {
+                // Faça algo se o idioma for português
+                Debug.Log("O idioma recuperado é português.");
+
+                question.text = question10.question_pt;
+                answer1.text = question10.answer1_pt;
+                answer2.text = question10.answer2_pt;
+                answer3.text = question10.answer3_pt;
+                correctAnswer.text = question10.correct_answer_pt;
+                questionNumber.text = 1 + "";
+                if (question10.difficulty == 1)
+                {
+                    difficulty.text = "fácil";
+                }
+                else if (question10.difficulty == 2)
+                {
+                    difficulty.text = "normal";
+                }
+                else
+                {
+                    difficulty.text = "difícil";
+                }
+            }
+            answer1Button.onClick.RemoveAllListeners();
+            answer2Button.onClick.RemoveAllListeners();
+            answer3Button.onClick.RemoveAllListeners();
+            answer4Button.onClick.RemoveAllListeners();
+
+            answer1Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+            answer2Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+            answer3Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, 0)));
+            answer4Button.onClick.AddListener(() => StartCoroutine(GetToQuizEnd(questions, question10.score)));
         }
     }
 
