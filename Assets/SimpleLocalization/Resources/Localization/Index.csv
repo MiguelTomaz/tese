@@ -263,3 +263,8 @@ Index.RouteQuiz,Route Quiz,Quiz de Rotas
 Index.StartQuiz,Start Quiz,Começar Quiz
 Index.QuizDescription,"This Quiz, consisting of 10 random questions, offers an opportunity to test and expand your knowledge about the various Points of Interest (POIs) available in the application. By answering questions, users have the opportunity to deepen their understanding of POIs, discovering interesting details and fun facts they may not have previously known.","Este Quiz, composto por 10 perguntas aleatórias, oferece uma oportunidade de testar e expandir seu conhecimento sobre os vários Pontos de Interesse (POIs) disponíveis na aplicação. Ao responder às perguntas, os usuários têm a oportunidade de aprofundar seu entendimento sobre os POIs, descobrindo detalhes interessantes e curiosidades que podem não ter conhecido anteriormente."
 Index.SelectRightAnswer,Select the correct answer,Seleciona a resposta correta
+Index.RightAnswer,Right Answer,Resposta Correta
+Index.QuizResults,Quiz Results,Resultados do Quiz
+Index.Score,Score,Pontuação
+Index.ListQuestions,List of Questions,Lista de Perguntas
+Index.User,User,Utilizador
