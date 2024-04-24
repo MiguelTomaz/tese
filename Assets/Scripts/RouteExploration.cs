@@ -10,6 +10,7 @@ using UnityEngine.XR.ARSubsystems;
 using Google.XR.ARCoreExtensions;
 using TMPro;
 using System.Security.Cryptography;
+using UnityEngine.SceneManagement;
 
 public class RouteExploration : MonoBehaviour
 {
@@ -121,6 +122,7 @@ public class RouteExploration : MonoBehaviour
     public Button closeRouteDetailsButton;
     public Button openCurrentPoiDetails;
     public Button closeCurrentPoiDetails;
+    public Button leaveExplorationButton;
     private bool isEplorationBegin = false;
     private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
     private List<PointOfInterest> poiListWithOrder = new List<PointOfInterest>();
@@ -190,6 +192,8 @@ public class RouteExploration : MonoBehaviour
 
         openCurrentPoiDetails.onClick.AddListener(openCurrentPoiDetailsPainel);
         closeCurrentPoiDetails.onClick.AddListener(closeCurrentPoiDetailsPainel);
+
+        leaveExplorationButton.onClick.AddListener(LeaveExploration);
     }
 
     // Update is called once per frame
@@ -792,5 +796,12 @@ public class RouteExploration : MonoBehaviour
             Destroy(obj);
         }
         instantiatedPOIObjects.Clear();
+    }
+    void LeaveExploration()
+    {
+        ClearInstantiatedPOIObjects();
+        PlayerPrefs.SetInt("AfterExploration", 1);
+        PlayerPrefs.Save(); // Salva as alterações
+        SceneManager.LoadScene("Index");
     }
 }

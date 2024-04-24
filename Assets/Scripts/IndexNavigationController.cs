@@ -92,28 +92,40 @@ public class IndexNavigationController : MonoBehaviour
         // Ativa a bússola
         Input.location.Start();
         Input.compass.enabled = true;
-        
 
-        LoginButton.onClick.AddListener(GoToLoginPainel);
-        RegisterButton.onClick.AddListener(GoToRegisterPainel);
-        backLogin.onClick.AddListener(GoBackFromLogin);
-        backRegister.onClick.AddListener(GoBackFromRegister);
 
-        quizNavButton.onClick.AddListener(openQuizPainel);
-        comNavButton.onClick.AddListener(openComPainel);
-        homeNavButton.onClick.AddListener(openHomePainel);
-        statsNavButton.onClick.AddListener(openStatsPainel);
-        optionsNavButton.onClick.AddListener(openOptionsPainel);
+        if (PlayerPrefs.GetInt("AfterExploration", 0) == 1)
+        {
+            // Ativa o GameObject
+            indexPainel.SetActive(false);
+            loginPainel.SetActive(false);
+            registerPainel.SetActive(false);
+            initPainel.SetActive(true);
+            PlayerPrefs.SetInt("AfterExploration", 0);
+        }
+        else
+        {
+            LoginButton.onClick.AddListener(GoToLoginPainel);
+            RegisterButton.onClick.AddListener(GoToRegisterPainel);
+            backLogin.onClick.AddListener(GoBackFromLogin);
+            backRegister.onClick.AddListener(GoBackFromRegister);
 
-        backFromQuiz.onClick.AddListener(BackNavBar);
-        backFromCom.onClick.AddListener(BackNavBar);
-        backFromStats.onClick.AddListener(BackNavBar);
-        backFromSettings.onClick.AddListener(BackNavBar);
+            quizNavButton.onClick.AddListener(openQuizPainel);
+            comNavButton.onClick.AddListener(openComPainel);
+            homeNavButton.onClick.AddListener(openHomePainel);
+            statsNavButton.onClick.AddListener(openStatsPainel);
+            optionsNavButton.onClick.AddListener(openOptionsPainel);
 
-        LogoutButton.onClick.AddListener(Logout);
-        exitEndQuizButton.onClick.AddListener(ExitEndQuiz);
+            backFromQuiz.onClick.AddListener(BackNavBar);
+            backFromCom.onClick.AddListener(BackNavBar);
+            backFromStats.onClick.AddListener(BackNavBar);
+            backFromSettings.onClick.AddListener(BackNavBar);
 
-        goToDevModeAR.onClick.AddListener(ExploreAR_DevMode);
+            LogoutButton.onClick.AddListener(Logout);
+            exitEndQuizButton.onClick.AddListener(ExitEndQuiz);
+
+            goToDevModeAR.onClick.AddListener(ExploreAR_DevMode);
+        }
     }
 
     private void Update()
