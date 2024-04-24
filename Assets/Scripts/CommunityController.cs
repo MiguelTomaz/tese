@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -23,6 +24,8 @@ public class CommunityController : MonoBehaviour
     private string likedUrl = "http://13.60.19.19:3000/api/photo/community/like";
     private GameObject communityTemplate;
     public Button leaveCommunityBtn;
+    public Image imageBig;
+    public Button closeBigImageButton;
 
     public Button CommunityBtn;
 
@@ -41,6 +44,7 @@ public class CommunityController : MonoBehaviour
     }
     void Start()
     {
+        closeBigImageButton.onClick.AddListener(CloseBigImage);
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
         Debug.Log("touristId: " + touristId);
         CommunityBtn.onClick.AddListener(() => GetCommunity(touristId));
@@ -100,6 +104,11 @@ public class CommunityController : MonoBehaviour
                     Debug.Log("item: " + item.id);
                     p = Instantiate(communityTemplate, communityPhotoContainer.transform);
                     Image imageComponent = p.transform.GetChild(0).GetComponent<Image>();
+                    EventTrigger trigger = imageComponent.gameObject.AddComponent<EventTrigger>();
+                    EventTrigger.Entry entry = new EventTrigger.Entry();
+                    entry.eventID = EventTriggerType.PointerClick;
+                    entry.callback.AddListener((data) => { OnImageComponentClick(imageComponent); });
+                    trigger.triggers.Add(entry);
                     LoadImageFromBase64(item.image_base64, imageComponent);
                     p.transform.GetChild(1).GetComponent<Text>().text = item.description;
                     p.transform.GetChild(5).GetComponent<Text>().text = item.email;
@@ -256,5 +265,16 @@ public class CommunityController : MonoBehaviour
         communityTemplate.SetActive(true);
         ClearInstantiatedPhotoObjects();
         Debug.Log("leave community");
+    }
+    void CloseBigImage()
+    {
+        imageBig.gameObject.SetActive(false);
+    }
+    void OnImageComponentClick(Image clickedImage)
+    {
+        Debug.Log("clicou");
+        // Atualize a sourceImage da imageBig com a sourceImage da imageComponent clicada
+        imageBig.sprite = clickedImage.sprite;
+        imageBig.gameObject.SetActive(true);
     }
 }

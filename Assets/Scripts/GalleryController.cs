@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -17,12 +18,18 @@ public class GalleryController : MonoBehaviour
     public GameObject galleryPanel;
     public GameObject galleryPhotoContainer;
     private GameObject photoTemplate;
+    public Image imageBig;
+    public Button closeBigImageButton;
+    private double photoHeight = 500;
+    private double photoNumber;
+
 
     void Start()
     {
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
         GalleryBtn.onClick.AddListener(() => GetGallery(touristId));
         backBtn.onClick.AddListener(LeaveGallery);
+        closeBigImageButton.onClick.AddListener(CloseBigImage);
     }
 
     // Update is called once per frame
@@ -106,8 +113,17 @@ public class GalleryController : MonoBehaviour
                 {
                     Debug.Log("item3: " + item.description);
                     p = Instantiate(photoTemplate, galleryPhotoContainer.transform);
+                    photoNumber = jsonArray2.Count;
+                    AdjustContainerPOIHeight(photoNumber);
                     Image imageComponent = p.transform.GetChild(0).GetComponent<Image>();
+                    EventTrigger trigger = imageComponent.gameObject.AddComponent<EventTrigger>();
+                    EventTrigger.Entry entry = new EventTrigger.Entry();
+                    entry.eventID = EventTriggerType.PointerClick;
+                    entry.callback.AddListener((data) => { OnImageComponentClick(imageComponent); });
+                    trigger.triggers.Add(entry);
+                    //Image imageComponent2 = p.transform.GetChild(6).GetComponent<Image>();
                     LoadImageFromBase64(item.image_base64, imageComponent);
+                    //LoadImageFromBase64(item.image_base64, imageComponent2);
                     p.transform.GetChild(1).GetComponent<Text>().text = item.description;
                     instantiatedPhotoObjects.Add(p);
                 }
@@ -180,5 +196,23 @@ public class GalleryController : MonoBehaviour
         ClearInstantiatedPhotoObjects();
         Debug.Log("leave gallery");
         galleryPanel.SetActive(false);
+    }
+    void OnImageComponentClick(Image clickedImage)
+    {
+        Debug.Log("clicou");
+        // Atualize a sourceImage da imageBig com a sourceImage da imageComponent clicada
+        imageBig.sprite = clickedImage.sprite;
+        imageBig.gameObject.SetActive(true);
+    }
+    void CloseBigImage()
+    {
+        imageBig.gameObject.SetActive(false);
+    }
+
+    void AdjustContainerPOIHeight(double numberElements)
+    {
+        double totalHeight = numberElements * photoHeight + (numberElements - 1) * 50; // Calculating total height
+        RectTransform containerRectTransform = galleryPhotoContainer.GetComponent<RectTransform>();
+        containerRectTransform.sizeDelta = new Vector2(containerRectTransform.sizeDelta.x, (float)totalHeight);
     }
 }
