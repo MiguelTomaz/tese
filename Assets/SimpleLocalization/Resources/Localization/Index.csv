@@ -275,3 +275,9 @@ Thank you for choosing to explore this tourist route with us. Until the next tri
 Obrigado por escolher explorar esta rota turística connosco. Até a próxima viagem e lembre-se: se a caminhada está difícil é porque você está no sítio certo!"
 Index.RouteEndTitle,End of Exploration,Fim da Exploração
 Index.NextPoi,Next POI,Próximo POI
+Index.RatingRouteTitle,Rate this Route,Avalie esta rota
+Index.RateRoute,Rate this Route,Classifique esta Rota
+Index.Submit,Submit,Enviar
+Index.RatingRouteDescription,"Rate this route from 1 to 5 based on your experience exploring it, where 1 is terrible and 5 is excellent","Avalie esta rota de 1 a 5 com base na sua experiência ao explorá-la, onde 1 é péssimo e 5 é excelente"
+Index.SuccessRateRoute,rating of the route completed successfully,classificação da rota concluída com sucesso
+Index.ErrorRateRoute,Error rating the route. Please try again,Erro a avalair a rota. Por favor tente novamente

@@ -14,24 +14,30 @@ public class RoutesController : MonoBehaviour
     public Button leaveChooseRouteBtn;
     public Button leaveRouteDetailsBtn;
     public Button leaveRouteSelectBtn;
+    public Button leaveRouteRateBtn;
     public Button startRouteExploration;
+    public Button submitRouteRateButton;
 
     public GameObject chooseRoutesPainel;
+    public Dropdown dropdownRateRoute;
 
     private string apiUrlChooseRoutes = "http://13.60.19.19:3000/api/route/all";
     private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
-    private double routeHeight = 800;
+    private double routeHeight = 1100;
     private double poiHeight = 1100;
 
     private double routeNumber;
     private double poiNumber;
     private bool isUserCloseToPoi = false;
+    private int rateRouteValue = 0;
+    private int rateRouteSelectedRouteId = 0;
 
     public GameObject routeContainer;
     private GameObject routeTemplate;
     public GameObject poiContainer;
     private GameObject poiTemplate;
     public GameObject routeDetailsPainel;
+    public GameObject routeRatePainel;
     public GameObject routeSelectPainel;
     public Image imageRouteTest;
     public Image imageRouteSelected;
@@ -48,6 +54,8 @@ public class RoutesController : MonoBehaviour
     public Text selectRouteExplanation;
     public Text selectRouteExplanation2;
     public Text selectRouteName;
+    public Text messageSucessRateRoute;
+    public Text messageErrorRateRoute;
 
     [System.Serializable]
     public class TouristicRoutesResponse
@@ -55,6 +63,14 @@ public class RoutesController : MonoBehaviour
         public bool success;
         public string message;
         public int touristicRouteId;
+    }
+
+    [System.Serializable]
+    public class RateRouteResponse
+    {
+        public string message;
+        public string operation;
+        public int roundedAverageRating;
     }
 
     [System.Serializable]
@@ -130,7 +146,19 @@ public class RoutesController : MonoBehaviour
     {
         chooseRouteBtn.onClick.AddListener(GetRequestStats);
         leaveRouteSelectBtn.onClick.AddListener(BackFromSelectRoute);
+        leaveRouteRateBtn.onClick.AddListener(BackFromRateRoute);
 
+        dropdownRateRoute.onValueChanged.RemoveAllListeners();
+
+        dropdownRateRoute.onValueChanged.AddListener(delegate {
+            DropdownRateValueChanged(dropdownRateRoute);
+        });
+
+        submitRouteRateButton.onClick.RemoveAllListeners();
+        submitRouteRateButton.onClick.AddListener(SubmitRouteRate);
+    }
+    void Update()
+    {
     }
     public void GetRequestStats()
     {
@@ -195,6 +223,9 @@ public class RoutesController : MonoBehaviour
 
                     Button buttonComponent = p.transform.GetChild(4).GetComponent<Button>();
                     buttonComponent.onClick.AddListener(() => { GetRouteDetails(item.id); });
+
+                    Button buttonComponentRate = p.transform.GetChild(10).GetComponent<Button>();
+                    buttonComponentRate.onClick.AddListener(() => { GetRouteRate(item.id); });
                     Debug.Log("rating da rota: " + item.rating);
 
                     if (int.TryParse(item.rating, out int ratingValue))
@@ -249,6 +280,14 @@ public class RoutesController : MonoBehaviour
     private void GetRouteDetails(int id)
     {
         StartCoroutine(GetRoutesDetailsRequest(id));
+    }
+
+    private void GetRouteRate(int id)
+    {
+        rateRouteSelectedRouteId = id;
+        Debug.Log("clicou rate");
+        routeRatePainel.SetActive(true);
+        //StartCoroutine(GetRoutesDetailsRequest(id));
     }
 
     private void GetRouteDetailsSelect(int id)
@@ -665,5 +704,91 @@ public class RoutesController : MonoBehaviour
     {
         isCheckingDistance = false;
         routeSelectPainel.SetActive(false);
+    }
+    public void BackFromRateRoute()
+    {
+        routeRatePainel.SetActive(false);
+    }
+    void DropdownRateValueChanged(Dropdown change)
+    {
+        int selectedValue = change.value;
+        rateRouteValue = selectedValue;
+        Debug.Log("Item selecionado: " + rateRouteValue);
+    }
+
+    void SubmitRouteRate()
+    {
+        Debug.Log("clicou submit route rate: " + rateRouteValue + ", rateRouteSelectedRouteId: " + rateRouteSelectedRouteId);
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
+        StartCoroutine(SubmitRouteRateCoroutine(rateRouteSelectedRouteId, touristId, rateRouteValue));
+    }
+
+    private IEnumerator SubmitRouteRateCoroutine(int route_id, int tourist_id, int rating)
+    {
+        int ratingRoute = 0;
+        if(rating == 0)
+        {
+            ratingRoute = 5;
+        }
+        else if(rating == 1)
+        {
+            ratingRoute = 4;
+        }
+        else if(rating == 2)
+        {
+            ratingRoute = 3;
+        }
+        else if (rating == 3)
+        {
+            ratingRoute = 2;
+        }
+        else if (rating == 4)
+        {
+            ratingRoute = 1;
+        }
+
+        string uri = "http://13.60.19.19:3000/api/user/rating/route";
+
+        WWWForm form = new WWWForm();
+        form.AddField("tourist_id", tourist_id);
+        form.AddField("route_id", route_id);
+        form.AddField("rating", ratingRoute);
+
+        Debug.Log("rate route com id " + route_id + ", tourist_id: " + tourist_id + ", rating: " + ratingRoute);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(uri, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Erro ao dar rate: " + www.error);
+                messageErrorRateRoute.gameObject.SetActive(true);
+                yield return new WaitForSeconds(3f);
+                messageErrorRateRoute.gameObject.SetActive(false);
+            }
+            else
+            {
+                string responseText = www.downloadHandler.text;
+                RateRouteResponse responseData = JsonUtility.FromJson<RateRouteResponse>(responseText);
+
+                if (responseData != null && responseData.message != null)
+                {
+                    Debug.Log("rating bem sucedida " + responseData.message + ", rate: " + responseData.roundedAverageRating);
+                    routeRatePainel.SetActive(false);
+                    messageSucessRateRoute.gameObject.SetActive(true);
+                    yield return new WaitForSeconds(3f);
+                    messageSucessRateRoute.gameObject.SetActive(false);
+
+                }
+                else
+                {
+                    Debug.LogError("Erro aorating: " + responseData.message);
+                    messageErrorRateRoute.gameObject.SetActive(true);
+                    yield return new WaitForSeconds(3f);
+                    messageErrorRateRoute.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }
