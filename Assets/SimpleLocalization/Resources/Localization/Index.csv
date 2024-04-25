@@ -281,3 +281,7 @@ Index.Submit,Submit,Enviar
 Index.RatingRouteDescription,"Rate this route from 1 to 5 based on your experience exploring it, where 1 is terrible and 5 is excellent","Avalie esta rota de 1 a 5 com base na sua experiência ao explorá-la, onde 1 é péssimo e 5 é excelente"
 Index.SuccessRateRoute,rating of the route completed successfully,classificação da rota concluída com sucesso
 Index.ErrorRateRoute,Error rating the route. Please try again,Erro a avalair a rota. Por favor tente novamente
+Index.RatePOITitle,Rate this POI,Avalie este POI
+Index.RatePOIDescription,"Rate this POI from 1 to 5 based on your experience exploring it, where 1 is terrible and 5 is excellent","Avalie este POI de 1 a 5 com base na sua experiência ao explorá-la, onde 1 é péssimo e 5 é excelente"
+Index.SuccessRatePOI,rating of the POI completed successfully,classificação do POI concluída com sucesso
+Index.ErrorRatePOI,Error rating the POI. Please try again,Erro a avalair o POI. Por favor tente novamente

@@ -15,11 +15,15 @@ public class RoutesController : MonoBehaviour
     public Button leaveRouteDetailsBtn;
     public Button leaveRouteSelectBtn;
     public Button leaveRouteRateBtn;
+    public Button leavePoiRateBtn;
     public Button startRouteExploration;
     public Button submitRouteRateButton;
+    public Button submitPoiRateButton;
+
 
     public GameObject chooseRoutesPainel;
     public Dropdown dropdownRateRoute;
+    public Dropdown dropdownRatePoi;
 
     private string apiUrlChooseRoutes = "http://13.60.19.19:3000/api/route/all";
     private string apiUrlRouteDetails = "http://13.60.19.19:3000/api/route/details/";
@@ -31,6 +35,8 @@ public class RoutesController : MonoBehaviour
     private bool isUserCloseToPoi = false;
     private int rateRouteValue = 0;
     private int rateRouteSelectedRouteId = 0;
+    private int ratePoiValue = 0;
+    private int ratePoiSelectedPoiId = 0;
 
     public GameObject routeContainer;
     private GameObject routeTemplate;
@@ -38,6 +44,7 @@ public class RoutesController : MonoBehaviour
     private GameObject poiTemplate;
     public GameObject routeDetailsPainel;
     public GameObject routeRatePainel;
+    public GameObject poiRatePainel;
     public GameObject routeSelectPainel;
     public Image imageRouteTest;
     public Image imageRouteSelected;
@@ -56,6 +63,8 @@ public class RoutesController : MonoBehaviour
     public Text selectRouteName;
     public Text messageSucessRateRoute;
     public Text messageErrorRateRoute;
+    public Text messageSucessRatePoi;
+    public Text messageErrorRatePoi;
 
     [System.Serializable]
     public class TouristicRoutesResponse
@@ -147,6 +156,7 @@ public class RoutesController : MonoBehaviour
         chooseRouteBtn.onClick.AddListener(GetRequestStats);
         leaveRouteSelectBtn.onClick.AddListener(BackFromSelectRoute);
         leaveRouteRateBtn.onClick.AddListener(BackFromRateRoute);
+        leavePoiRateBtn.onClick.AddListener(BackFromRatePoi);
 
         dropdownRateRoute.onValueChanged.RemoveAllListeners();
 
@@ -154,8 +164,17 @@ public class RoutesController : MonoBehaviour
             DropdownRateValueChanged(dropdownRateRoute);
         });
 
+        dropdownRatePoi.onValueChanged.RemoveAllListeners();
+
+        dropdownRatePoi.onValueChanged.AddListener(delegate {
+            DropdownRatePoiValueChanged(dropdownRatePoi);
+        });
+
         submitRouteRateButton.onClick.RemoveAllListeners();
         submitRouteRateButton.onClick.AddListener(SubmitRouteRate);
+
+        submitPoiRateButton.onClick.RemoveAllListeners();
+        submitPoiRateButton.onClick.AddListener(SubmitPoiRate);
     }
     void Update()
     {
@@ -290,6 +309,14 @@ public class RoutesController : MonoBehaviour
         //StartCoroutine(GetRoutesDetailsRequest(id));
     }
 
+    private void GetPoiRate(int id)
+    {
+        ratePoiSelectedPoiId = id;
+        Debug.Log("clicou rate poi: " + ratePoiSelectedPoiId);
+        poiRatePainel.SetActive(true);
+        //StartCoroutine(GetRoutesDetailsRequest(id));
+    }
+
     private void GetRouteDetailsSelect(int id)
     {
         StartCoroutine(GetRoutesDetailsSelectRequest(id));
@@ -398,6 +425,9 @@ public class RoutesController : MonoBehaviour
                     p.transform.GetChild(2).GetComponent<Text>().text = poi.description;
                     p.transform.GetChild(4).GetComponent<Text>().text = poi.creator_name;
                     p.transform.GetChild(6).GetComponent<Text>().text = poi.architectural_style;
+
+                    Button buttonComponentRatePoi = p.transform.GetChild(12).GetComponent<Button>();
+                    buttonComponentRatePoi.onClick.AddListener(() => { GetPoiRate(poi.id); });
 
                     if (poi.rating == 5)
                     {
@@ -709,11 +739,22 @@ public class RoutesController : MonoBehaviour
     {
         routeRatePainel.SetActive(false);
     }
+    public void BackFromRatePoi()
+    {
+        poiRatePainel.SetActive(false);
+    }
     void DropdownRateValueChanged(Dropdown change)
     {
         int selectedValue = change.value;
         rateRouteValue = selectedValue;
         Debug.Log("Item selecionado: " + rateRouteValue);
+    }
+
+    void DropdownRatePoiValueChanged(Dropdown change)
+    {
+        int selectedValue = change.value;
+        ratePoiValue = selectedValue;
+        Debug.Log("Item selecionado poi: " + ratePoiValue);
     }
 
     void SubmitRouteRate()
@@ -787,6 +828,82 @@ public class RoutesController : MonoBehaviour
                     messageErrorRateRoute.gameObject.SetActive(true);
                     yield return new WaitForSeconds(3f);
                     messageErrorRateRoute.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
+    void SubmitPoiRate()
+    {
+        Debug.Log("clicou submit poi rate: " + ratePoiValue + ", ratePoiSelectedPoiId: " + ratePoiSelectedPoiId);
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
+        StartCoroutine(SubmitPoiRateCoroutine(ratePoiSelectedPoiId, touristId, ratePoiValue));
+    }
+
+    private IEnumerator SubmitPoiRateCoroutine(int poi_id, int tourist_id, int rating)
+    {
+        int ratingPoi = 0;
+        if (rating == 0)
+        {
+            ratingPoi = 5;
+        }
+        else if (rating == 1)
+        {
+            ratingPoi = 4;
+        }
+        else if (rating == 2)
+        {
+            ratingPoi = 3;
+        }
+        else if (rating == 3)
+        {
+            ratingPoi = 2;
+        }
+        else if (rating == 4)
+        {
+            ratingPoi = 1;
+        }
+
+        string uri = "http://13.60.19.19:3000/api/user/rating/poi";
+
+        WWWForm form = new WWWForm();
+        form.AddField("tourist_id", tourist_id);
+        form.AddField("poi_id", poi_id);
+        form.AddField("rating", ratingPoi);
+
+        Debug.Log("rate poi com id " + poi_id + ", tourist_id: " + tourist_id + ", rating: " + ratingPoi);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(uri, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Erro ao dar rate: " + www.error);
+                messageErrorRatePoi.gameObject.SetActive(true);
+                yield return new WaitForSeconds(3f);
+                messageErrorRatePoi.gameObject.SetActive(false);
+            }
+            else
+            {
+                string responseText = www.downloadHandler.text;
+                RateRouteResponse responseData = JsonUtility.FromJson<RateRouteResponse>(responseText);
+
+                if (responseData != null && responseData.message != null)
+                {
+                    Debug.Log("rating bem sucedida " + responseData.message + ", rate: " + responseData.roundedAverageRating);
+                    poiRatePainel.SetActive(false);
+                    messageSucessRatePoi.gameObject.SetActive(true);
+                    yield return new WaitForSeconds(3f);
+                    messageSucessRatePoi.gameObject.SetActive(false);
+
+                }
+                else
+                {
+                    Debug.LogError("Erro aorating: " + responseData.message);
+                    messageErrorRatePoi.gameObject.SetActive(true);
+                    yield return new WaitForSeconds(3f);
+                    messageErrorRatePoi.gameObject.SetActive(false);
                 }
             }
         }
