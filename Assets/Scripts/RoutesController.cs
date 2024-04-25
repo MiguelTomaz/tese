@@ -35,6 +35,11 @@ public class RoutesController : MonoBehaviour
     public GameObject routeSelectPainel;
     public Image imageRouteTest;
     public Image imageRouteSelected;
+    public Image routeRatingDetails5;
+    public Image routeRatingDetails4;
+    public Image routeRatingDetails3;
+    public Image routeRatingDetails2;
+    public Image routeRatingDetails1;
 
     public Text RouteName;
     public Text RouteCity;
@@ -190,7 +195,37 @@ public class RoutesController : MonoBehaviour
 
                     Button buttonComponent = p.transform.GetChild(4).GetComponent<Button>();
                     buttonComponent.onClick.AddListener(() => { GetRouteDetails(item.id); });
+                    Debug.Log("rating da rota: " + item.rating);
 
+                    if (int.TryParse(item.rating, out int ratingValue))
+                    {
+                        if (ratingValue == 5)
+                        {
+                            // Ativar a imagem no filho 5
+                            p.transform.GetChild(5).gameObject.SetActive(true);
+                        }
+                        else if (ratingValue == 4)
+                        {
+                            p.transform.GetChild(6).gameObject.SetActive(true);
+                        }
+                        else if (ratingValue == 3)
+                        {
+                            p.transform.GetChild(7).gameObject.SetActive(true);
+                        }
+                        else if (ratingValue == 2)
+                        {
+                            p.transform.GetChild(8).gameObject.SetActive(true);
+                        }
+                        else if (ratingValue == 1)
+                        {
+                            p.transform.GetChild(9).gameObject.SetActive(true);
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    
 
                     instantiatedRouteObjects.Add(p);
                     /**
@@ -263,6 +298,55 @@ public class RoutesController : MonoBehaviour
 
                 poiTemplate = poiContainer.transform.GetChild(0).gameObject;
                 leaveRouteDetailsBtn.onClick.AddListener(BackFromRouteDetails);
+                if(response.route.rating == 5)
+                {
+                    routeRatingDetails5.gameObject.SetActive(true);
+                    routeRatingDetails4.gameObject.SetActive(false);
+                    routeRatingDetails3.gameObject.SetActive(false);
+                    routeRatingDetails2.gameObject.SetActive(false);
+                    routeRatingDetails1.gameObject.SetActive(false);
+                }
+                else if (response.route.rating == 4)
+                {
+                    routeRatingDetails5.gameObject.SetActive(false);
+                    routeRatingDetails4.gameObject.SetActive(true);
+                    routeRatingDetails3.gameObject.SetActive(false);
+                    routeRatingDetails2.gameObject.SetActive(false);
+                    routeRatingDetails1.gameObject.SetActive(false);
+                }
+                else if (response.route.rating == 3)
+                {
+                    routeRatingDetails5.gameObject.SetActive(false);
+                    routeRatingDetails4.gameObject.SetActive(false);
+                    routeRatingDetails3.gameObject.SetActive(true);
+                    routeRatingDetails2.gameObject.SetActive(false);
+                    routeRatingDetails1.gameObject.SetActive(false);
+                }
+                else if (response.route.rating == 2)
+                {
+                    routeRatingDetails5.gameObject.SetActive(false);
+                    routeRatingDetails4.gameObject.SetActive(false);
+                    routeRatingDetails3.gameObject.SetActive(false);
+                    routeRatingDetails2.gameObject.SetActive(true);
+                    routeRatingDetails1.gameObject.SetActive(false);
+                }
+                else if (response.route.rating == 1)
+                {
+                    routeRatingDetails5.gameObject.SetActive(false);
+                    routeRatingDetails4.gameObject.SetActive(false);
+                    routeRatingDetails3.gameObject.SetActive(false);
+                    routeRatingDetails2.gameObject.SetActive(false);
+                    routeRatingDetails1.gameObject.SetActive(true);
+                }
+                else
+                {
+                    routeRatingDetails5.gameObject.SetActive(false);
+                    routeRatingDetails4.gameObject.SetActive(false);
+                    routeRatingDetails3.gameObject.SetActive(false);
+                    routeRatingDetails2.gameObject.SetActive(false);
+                    routeRatingDetails1.gameObject.SetActive(false);
+                }
+
                 GameObject p;
                 foreach (var poi in response.poiList)
                 {
@@ -275,6 +359,32 @@ public class RoutesController : MonoBehaviour
                     p.transform.GetChild(2).GetComponent<Text>().text = poi.description;
                     p.transform.GetChild(4).GetComponent<Text>().text = poi.creator_name;
                     p.transform.GetChild(6).GetComponent<Text>().text = poi.architectural_style;
+
+                    if (poi.rating == 5)
+                    {
+                        // Ativar a imagem no filho 5
+                        p.transform.GetChild(7).gameObject.SetActive(true);
+                    }
+                    else if (poi.rating == 4)
+                    {
+                        p.transform.GetChild(8).gameObject.SetActive(true);
+                    }
+                    else if (poi.rating == 3)
+                    {
+                        p.transform.GetChild(9).gameObject.SetActive(true);
+                    }
+                    else if (poi.rating == 2)
+                    {
+                        p.transform.GetChild(10).gameObject.SetActive(true);
+                    }
+                    else if (poi.rating == 1)
+                    {
+                        p.transform.GetChild(11).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+
+                    }
 
                     instantiatedPOIObjects.Add(p);
                 }
