@@ -149,6 +149,8 @@ public class RoutesController : MonoBehaviour
         public string website;
         public string opening_hours;
         public int rating;
+        public string city;
+        public string image;
     }
 
     void Start()
@@ -425,6 +427,9 @@ public class RoutesController : MonoBehaviour
                     p.transform.GetChild(2).GetComponent<Text>().text = poi.description;
                     p.transform.GetChild(4).GetComponent<Text>().text = poi.creator_name;
                     p.transform.GetChild(6).GetComponent<Text>().text = poi.architectural_style;
+
+                    Image imageComponent = p.transform.GetChild(1).GetComponent<Image>();
+                    LoadImageFromBase64(poi.image, imageComponent);
 
                     Button buttonComponentRatePoi = p.transform.GetChild(12).GetComponent<Button>();
                     buttonComponentRatePoi.onClick.AddListener(() => { GetPoiRate(poi.id); });

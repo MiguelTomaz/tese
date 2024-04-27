@@ -22,6 +22,11 @@ public class RouteExploration : MonoBehaviour
     public GameObject routeDetailsPainel;
     public GameObject currentPoiDetailsPainel;
     public GameObject livrariaPoiDetails;
+    public GameObject marker1Prefab;
+    public GameObject marker2Prefab;
+    public GameObject marker3Prefab;
+    public GameObject marker4Prefab;
+    public GameObject marker5Prefab;
 
     public GameObject arrowNorth;
     public GameObject arrowPoi;
@@ -586,10 +591,24 @@ public class RouteExploration : MonoBehaviour
             {
                 var eartPosition = obj.earthPosition;
                 var objAnchor = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, eartPosition.latitude, eartPosition.longitude, eartPosition.altitude, Quaternion.identity);
-                //var objAnchor2 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.756905, -7.462092, eartPosition.altitude, Quaternion.identity);
+                
                 Instantiate(obj.objectPrefab, objAnchor.transform);
                 canStartExploration = true;
             }
+            var objmarker1 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.75635757535145, -7.462049324701942, 429.6177, Quaternion.identity);
+            Instantiate(marker1Prefab, objmarker1.transform);
+
+            var objmarker2 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.75651560998681, -7.461952674580199, 429.6178, Quaternion.identity);
+            Instantiate(marker2Prefab, objmarker2.transform);
+
+            var objmarker3 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.756650921156066, -7.4618578431132585, 430.6179, Quaternion.identity);
+            Instantiate(marker3Prefab, objmarker3.transform);
+
+            var objmarker4 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.7569066819394, -7.461709706018471, 431.6181, Quaternion.identity);
+            Instantiate(marker4Prefab, objmarker4.transform);
+
+            var objmarker5 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.75694841930088, -7.461938247304522, 432.6181, Quaternion.identity);
+            Instantiate(marker5Prefab, objmarker5.transform);
         }
 
         else if (earthManager.EarthTrackingState == TrackingState.None)
@@ -601,7 +620,7 @@ public class RouteExploration : MonoBehaviour
 
     public void TakePhoto()
     {
-        clickPhotoTest.text = "clicou photo";
+        //clickPhotoTest.text = "clicou photo";
         
         StartCoroutine(Photo());
         addDescriptionPhotoPainel.SetActive(true);
@@ -609,14 +628,14 @@ public class RouteExploration : MonoBehaviour
 
     public IEnumerator Photo()
     {
-        clickPhotoTest.text = "clicou photo 1";
+        //clickPhotoTest.text = "clicou photo 1";
         Debug.Log("StartCoroutine");
         yield return new WaitForEndOfFrame();
         Camera camera = Camera.main;
         int width = Screen.width;
         int height = Screen.height;
 
-        clickPhotoTest.text = "clicou photo 2";
+        //clickPhotoTest.text = "clicou photo 2";
 
         RenderTexture rt = new RenderTexture(width, height, 24);
         camera.targetTexture = rt;
@@ -627,7 +646,7 @@ public class RouteExploration : MonoBehaviour
 
         // Render the camera's view.
         camera.Render();
-        clickPhotoTest.text = "clicou photo 3";
+        //clickPhotoTest.text = "clicou photo 3";
 
         // Make a new texture and read the active Render Texture into it.
         Texture2D image = new Texture2D(width, height);
@@ -639,7 +658,7 @@ public class RouteExploration : MonoBehaviour
         RenderTexture.active = currentRT;
 
  
-        clickPhotoTest.text = "clicou photo 4";
+        //clickPhotoTest.text = "clicou photo 4";
         byte[] bytes = image.EncodeToPNG();
         Debug.Log("bytes: " + bytes);
         string base64String = Convert.ToBase64String(bytes);
@@ -650,7 +669,7 @@ public class RouteExploration : MonoBehaviour
         Debug.Log("imageHash: " + imageHash);
        
 
-        clickPhotoTest.text = "clicou photo 5";
+        //clickPhotoTest.text = "clicou photo 5";
         savePhotoButton.onClick.RemoveAllListeners();
         savePhotoButton.onClick.AddListener(() => { SubmitPhotoWithDescription(imageHash, filename, base64String); });
 
@@ -661,7 +680,6 @@ public class RouteExploration : MonoBehaviour
 
     public void SubmitPhotoWithDescription(string imageHash, string filename, string base64String)
     {
-        clickPhotoTest.text = "clicou photo 6";
         //send this to save descriptino painel button
         int touristicRouteId = touristRouteId;
         if(touristicRouteId == -1)
@@ -688,7 +706,6 @@ public class RouteExploration : MonoBehaviour
             //savePhotoButton.interactable = false;
         }
         */
-        clickPhotoTest.text = "clicou photo 7";
         UploadPhoto(touristicRouteId, description, date, imageHash, filename, base64String);
         addDescriptionPhotoPainel.SetActive(false);
     }
@@ -709,7 +726,6 @@ public class RouteExploration : MonoBehaviour
 
     public void UploadPhoto(int touristRouteAssociationId, string description, DateTime date, string imageHash, string filename, string base64String)
     {
-        clickPhotoTest.text = "clicou photo 8";
         string url = "http://13.60.19.19:3000/api/photo/upload";
 
         // Convertendo a imagem para bytes
@@ -723,7 +739,6 @@ public class RouteExploration : MonoBehaviour
         form.AddField("filename", filename);
         form.AddField("image_base64", base64String);
 
-        clickPhotoTest.text = "clicou photo 9";
 
         // Enviando a requisição
         StartCoroutine(SendRequestPhoto(url, form));
@@ -731,7 +746,6 @@ public class RouteExploration : MonoBehaviour
 
     IEnumerator SendRequestPhoto(string url, WWWForm form)
     {
-        clickPhotoTest.text = "clicou photo 10";
         using (UnityWebRequest www = UnityWebRequest.Post(url, form))
         {
             yield return www.SendWebRequest();
@@ -739,7 +753,6 @@ public class RouteExploration : MonoBehaviour
             if (www.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Erro ao enviar a foto: " + www.error);
-                clickPhotoTest.text = "clicou photo 11";
 
                 photoAddedErrorMesage.gameObject.SetActive(true);
                 yield return new WaitForSeconds(3f); // Exibir por 3 segundos
@@ -747,7 +760,6 @@ public class RouteExploration : MonoBehaviour
             }
             else
             {
-                clickPhotoTest.text = "foto enviada";
                 Debug.Log("Foto enviada com sucesso!");
 
                 photoAddedSuccessMessage.gameObject.SetActive(true);
