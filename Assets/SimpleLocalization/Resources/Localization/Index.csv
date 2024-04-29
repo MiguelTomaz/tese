@@ -285,3 +285,7 @@ Index.RatePOITitle,Rate this POI,Avalie este POI
 Index.RatePOIDescription,"Rate this POI from 1 to 5 based on your experience exploring it, where 1 is terrible and 5 is excellent","Avalie este POI de 1 a 5 com base na sua experiência ao explorá-la, onde 1 é péssimo e 5 é excelente"
 Index.SuccessRatePOI,rating of the POI completed successfully,classificação do POI concluída com sucesso
 Index.ErrorRatePOI,Error rating the POI. Please try again,Erro a avalair o POI. Por favor tente novamente
+Index.Start,Start,Começar
+Index.InsertPoiOrder,"the order of POIs on your route will be the order you click on them, in ascending order","a ordem dos POIs na sua rota será a ordem em que você clica neles, em ordem crescente"
+Index.Question,Question,Pergunta
+Index.difficulty,Difficulty,Dificuldade
