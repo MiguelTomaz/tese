@@ -183,6 +183,8 @@ public class RouteExploration : MonoBehaviour
 
         openRouteExplorationDetailsPainelBtn.onClick.AddListener(openPainelRouteExploration);
         closeRouteExplorationDetailsPainelBtn.onClick.AddListener(closePainelRouteExploration);
+
+        addOrderPoiTesteBtn.onClick.RemoveAllListeners();
         addOrderPoiTesteBtn.onClick.AddListener(addRoutePoiOrder);
         VerifyGeospatialSupport();
 
@@ -525,6 +527,7 @@ public class RouteExploration : MonoBehaviour
     {
         Debug.Log("click add poi current order. before: " + routePoiCurrentOrder);
         routePoiCurrentOrder = routePoiCurrentOrder + 1;
+        StartCoroutine(AddPoiVisited());
         Debug.Log("after click add poi current order. after: " + routePoiCurrentOrder);
     }
 
@@ -815,5 +818,29 @@ public class RouteExploration : MonoBehaviour
         PlayerPrefs.SetInt("AfterExploration", 1);
         PlayerPrefs.Save(); // Salva as alterações
         SceneManager.LoadScene("Index");
+    }
+
+    public IEnumerator AddPoiVisited()
+    {
+        int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1);
+
+        string apiUrl = "http://13.60.19.19:3000/api/user/addPoi/";
+        string url = apiUrl + touristId;
+
+        using (UnityWebRequest request = UnityWebRequest.Put(url, ""))
+        {
+            // Enviando a solicitação
+            yield return request.SendWebRequest();
+
+            // Verificando se ocorreu algum erro na solicitação
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erro ao adicionar ponto de interesse: " + request.error);
+            }
+            else
+            {
+                Debug.Log("Ponto de interesse adicionado com sucesso para o turista com ID " + touristId);
+            }
+        }
     }
 }
