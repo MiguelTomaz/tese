@@ -162,6 +162,8 @@ public class RouteExploration : MonoBehaviour
     public Text nextPoiDistance;
     void Start()
     {
+        PlayerPrefs.SetInt("RoutePoiCurrentOrder", routePoiCurrentOrder);
+        PlayerPrefs.Save();
         photoAddedSuccessMessage.gameObject.SetActive(false);
         photoAddedErrorMesage.gameObject.SetActive(false);
         currentPoiDetailsPainel.SetActive(false);
@@ -531,12 +533,39 @@ public class RouteExploration : MonoBehaviour
     }
     public void addRoutePoiOrder()
     {
-        Debug.Log("click add poi current order. before: " + routePoiCurrentOrder);
-        routePoiCurrentOrder = routePoiCurrentOrder + 1;
-        PlayerPrefs.SetInt("RoutePoiCurrentOrder", routePoiCurrentOrder);
-        PlayerPrefs.Save();
-        StartCoroutine(AddPoiVisited());
-        Debug.Log("after click add poi current order. after: " + routePoiCurrentOrder);
+        if(routePoiCurrentOrder == poiListWithOrder.Count - 1)
+        {
+            Debug.Log("acabou");
+            addOrderPoiTesteBtn.gameObject.SetActive(false);
+            PlayerPrefs.SetInt("RoutePoiCurrentOrder", routePoiCurrentOrder);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.Log("click add poi current order. before: " + routePoiCurrentOrder);
+            routePoiCurrentOrder = routePoiCurrentOrder + 1;
+            PlayerPrefs.SetInt("RoutePoiCurrentOrder", routePoiCurrentOrder);
+            PlayerPrefs.Save();
+
+            foreach (var poi in poiListWithOrder)
+            {
+                if (poi.Order == routePoiCurrentOrder)
+                {
+                    Image imageComponent = currentPoiImage;
+                    LoadImageFromBase64(poi.image, imageComponent);
+                    currentPoiName.text = poi.name;
+                    currentPoiLat.text = "lat: " + poi.latitude;
+                    currentPoiLong.text = "long: " + poi.longitude;
+
+                    currentPoiLatitude = poi.latitude;
+                    currentPoiLongitude = poi.longitude;
+                }
+
+            }
+
+            StartCoroutine(AddPoiVisited());
+            Debug.Log("after click add poi current order. after: " + routePoiCurrentOrder);
+        }
     }
 
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
