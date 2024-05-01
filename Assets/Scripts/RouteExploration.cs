@@ -527,6 +527,8 @@ public class RouteExploration : MonoBehaviour
     {
         Debug.Log("click add poi current order. before: " + routePoiCurrentOrder);
         routePoiCurrentOrder = routePoiCurrentOrder + 1;
+        PlayerPrefs.SetInt("RoutePoiCurrentOrder", routePoiCurrentOrder);
+        PlayerPrefs.Save();
         StartCoroutine(AddPoiVisited());
         Debug.Log("after click add poi current order. after: " + routePoiCurrentOrder);
     }
