@@ -43,6 +43,7 @@ public class RouteExploration : MonoBehaviour
     public Text currentPoiDetailsName;
     public GameObject poiContainerRouteDetails;
     private GameObject poiTemplateRouteDetails;
+    public Image currentPoiImage;
 
     private bool canStartExploration = false;
     private double poiHeight = 1100;
@@ -111,6 +112,8 @@ public class RouteExploration : MonoBehaviour
         public string website;
         public string opening_hours;
         public int rating;
+        public string city;
+        public string image;
         public int Order;
     }
 
@@ -459,6 +462,9 @@ public class RouteExploration : MonoBehaviour
 
                         currentPoiLatitude = poi.latitude;
                         currentPoiLongitude = poi.longitude;
+
+                        Image imageComponent = currentPoiImage;
+                        LoadImageFromBase64(poi.image, imageComponent);
 
                         double currentDistance = CalculateDistance(latitudeUser, longitudeUser, poi.latitude, poi.longitude);
                         int roundedDistance = (int)Math.Floor(currentDistance);
@@ -844,5 +850,21 @@ public class RouteExploration : MonoBehaviour
                 Debug.Log("Ponto de interesse adicionado com sucesso para o turista com ID " + touristId);
             }
         }
+    }
+
+    public void LoadImageFromBase64(string base64String, Image image)
+    {
+        Debug.Log("LoadImageFromBase64");
+        //Debug.Log("base64String: " + base64String);
+
+        // Converte a string base64 para bytes
+        byte[] imageBytes = Convert.FromBase64String(base64String);
+
+        // Cria uma textura a partir dos bytes da imagem
+        Texture2D texture = new Texture2D(1, 1);
+        texture.LoadImage(imageBytes);
+
+        // Define a textura no componente Image
+        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
     }
 }

@@ -2040,6 +2040,7 @@ MonoBehaviour:
   photoAddedErrorMesage: {fileID: 640880538}
   currentPoiDetailsName: {fileID: 1076708487}
   poiContainerRouteDetails: {fileID: 109084054}
+  currentPoiImage: {fileID: 477649597}
   aRAnchorManager: {fileID: 150483825}
   geospatialObjects: []
   routeExplorationDetailsPainel: {fileID: 1622495422}
