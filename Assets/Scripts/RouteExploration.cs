@@ -18,6 +18,13 @@ public class RouteExploration : MonoBehaviour
     public GameObject prefabLivraria;
     public GameObject prefabUni;
     public GameObject prefabClerigos;
+    public GameObject prefabPonteChaves;
+    public GameObject prefabTermasChaves;
+    public GameObject prefabIgrejaChaves;
+    public GameObject prefabCasteloChaves;
+    public GameObject prefabAguasChaves;
+
+
     public GameObject addDescriptionPhotoPainel;
     public GameObject routeDetailsPainel;
     public GameObject currentPoiDetailsPainel;
@@ -27,6 +34,14 @@ public class RouteExploration : MonoBehaviour
     public GameObject marker3Prefab;
     public GameObject marker4Prefab;
     public GameObject marker5Prefab;
+
+
+    public GameObject marker1PrefabChaves;
+    public GameObject marker2PrefabChaves;
+    public GameObject marker3PrefabChaves;
+    public GameObject marker4PrefabChaves;
+    public GameObject marker5PrefabChaves;
+    public GameObject marker6PrefabChaves;
 
     public GameObject arrowNorth;
     public GameObject arrowPoi;
@@ -177,6 +192,11 @@ public class RouteExploration : MonoBehaviour
         POI_prefabs.Add(3, prefabLivraria);
         POI_prefabs.Add(4, prefabUni);
         POI_prefabs.Add(5, prefabClerigos);
+        POI_prefabs.Add(41, prefabPonteChaves);
+        POI_prefabs.Add(42, prefabTermasChaves);
+        POI_prefabs.Add(43, prefabIgrejaChaves);
+        POI_prefabs.Add(44, prefabCasteloChaves);
+        POI_prefabs.Add(45, prefabAguasChaves);
 
         savedLanguage = PlayerPrefs.GetString("Language", "en");
         int touristId = PlayerPrefs.GetInt("Current_Logged_TouristID", -1); // -1 é o valor padrão se a chave "UserID" não existir
@@ -384,6 +404,9 @@ public class RouteExploration : MonoBehaviour
                     p.transform.GetChild(0).GetComponent<Text>().text = poi.name;
                     p.transform.GetChild(2).GetComponent<Text>().text = poi.description;
 
+                    Image imageComponent = p.transform.GetChild(1).GetComponent<Image>();
+                    LoadImageFromBase64(poi.image, imageComponent);
+
                     instantiatedPOIObjects.Add(p);
                 }
                 poiTemplateRouteDetails.SetActive(false);
@@ -442,6 +465,7 @@ public class RouteExploration : MonoBehaviour
 
                         if (POI_prefabs.TryGetValue(poi.id, out GameObject prefab))
                         {
+                            Debug.Log("prefab poi da rota: " + prefab.name);
                             GeospatialObject geospatialObject = new GeospatialObject
                             {
                                 objectPrefab = prefab,
@@ -649,6 +673,26 @@ public class RouteExploration : MonoBehaviour
 
             var objmarker5 = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.75694841930088, -7.461938247304522, 432.6181, Quaternion.identity);
             Instantiate(marker5Prefab, objmarker5.transform);
+
+
+            //marker ar chaves
+            var objmarker1Chaves = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.73896643405145, -7.468019156329263, 407.1068, Quaternion.identity);
+            Instantiate(marker1PrefabChaves, objmarker1Chaves.transform);
+
+            var objmarker2Chaves = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.73909851309631, -7.468128960641048, 407.1069, Quaternion.identity);
+            Instantiate(marker2PrefabChaves, objmarker2Chaves.transform);
+
+            var objmarker3Chaves = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.739041702751294, -7.468270323001385, 409.1068, Quaternion.identity);
+            Instantiate(marker3PrefabChaves, objmarker3Chaves.transform);
+
+            var objmarker4Chaves = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.73914728384645, -7.468432851262811, 410.1069, Quaternion.identity);
+            Instantiate(marker4PrefabChaves, objmarker4Chaves.transform);
+
+            var objmarker5Chaves = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.73924847183328, -7.468597856179807, 411.1069, Quaternion.identity);
+            Instantiate(marker5PrefabChaves, objmarker5Chaves.transform);
+
+            var objmarker6Chaves = ARAnchorManagerExtensions.AddAnchor(aRAnchorManager, 41.73930504437349, -7.468726309263439, 412.107, Quaternion.identity);
+            Instantiate(marker6PrefabChaves, objmarker6Chaves.transform);
         }
 
         else if (earthManager.EarthTrackingState == TrackingState.None)
