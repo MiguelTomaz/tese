@@ -230,7 +230,7 @@ public class IndexNavigationController : MonoBehaviour
     }
     public void openComPainel()
     {
-        comPainel.SetActive(true);
+        //comPainel.SetActive(true);
 
         homePainel.SetActive(false);
         quizPainel.SetActive(false);

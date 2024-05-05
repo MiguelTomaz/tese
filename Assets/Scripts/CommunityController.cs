@@ -72,6 +72,7 @@ public class CommunityController : MonoBehaviour
     {
         Debug.Log("GetCommunity");
         string url = apiUrl;// + touristId;
+        //communityPanel.SetActive(true);
         StartCoroutine(SendGetCommunityRequest(url));
     }
     private List<GameObject> instantiatedPhotoObjects = new List<GameObject>();

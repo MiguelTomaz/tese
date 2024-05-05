@@ -186,8 +186,6 @@ public class CreateRouteController : MonoBehaviour
 
     void GoToAddPoi(int routeId, int created)
     {
-        createRouteStep.SetActive(false);
-        createPOIStep.SetActive(true);
         StartCoroutine(GetPoiListRequest(routeId, created));
     }
 
@@ -243,6 +241,8 @@ public class CreateRouteController : MonoBehaviour
                         instantiatedPOIObjects.Add(p);
                     }
                     poiTemplate.SetActive(false);
+                    createRouteStep.SetActive(false);
+                    createPOIStep.SetActive(true);
                     finishCreationRoute.onClick.AddListener(FinishCreateRouteFunc);
                 }
                 else
