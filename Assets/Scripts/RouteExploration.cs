@@ -29,6 +29,11 @@ public class RouteExploration : MonoBehaviour
     public GameObject routeDetailsPainel;
     public GameObject currentPoiDetailsPainel;
     public GameObject livrariaPoiDetails;
+    public GameObject pontePoiDetails;
+    public GameObject termasPoiDetails;
+    public GameObject igrejaPoiDetails;
+    public GameObject casteloPoiDetails;
+    public GameObject fontePoiDetails;
     public GameObject marker1Prefab;
     public GameObject marker2Prefab;
     public GameObject marker3Prefab;
@@ -239,6 +244,42 @@ public class RouteExploration : MonoBehaviour
                 {
                     livrariaPoiDetails.SetActive(true);
                 }
+                else if(poi.id == 41) //ponte
+                {
+                    pontePoiDetails.SetActive(true);
+                    livrariaPoiDetails.SetActive(false);
+                }
+                else if(poi.id == 42) //termas
+                {
+                    pontePoiDetails.SetActive(false);
+                    livrariaPoiDetails.SetActive(false);
+                    termasPoiDetails.SetActive(true);
+                }
+                else if(poi.id == 43) //igreja
+                {
+                    pontePoiDetails.SetActive(false);
+                    livrariaPoiDetails.SetActive(false);
+                    termasPoiDetails.SetActive(false);
+                    igrejaPoiDetails.SetActive(true);
+                }
+                else if(poi.id == 44) //castelo
+                {
+                    pontePoiDetails.SetActive(false);
+                    livrariaPoiDetails.SetActive(false);
+                    termasPoiDetails.SetActive(false);
+                    igrejaPoiDetails.SetActive(false);
+                    casteloPoiDetails.SetActive(true);
+                }
+                else if(poi.id == 45) //fonte
+                {
+                    pontePoiDetails.SetActive(false);
+                    livrariaPoiDetails.SetActive(false);
+                    termasPoiDetails.SetActive(false);
+                    igrejaPoiDetails.SetActive(false);
+                    casteloPoiDetails.SetActive(false);
+                    fontePoiDetails.SetActive(true);
+                }
+
                 currentPoiDetailsName.text = poi.name;
             }
 
@@ -441,7 +482,7 @@ public class RouteExploration : MonoBehaviour
                 }
 
                 latitudeUserText.text = "lat: " + latitudeUser;
-                longitudeUserText.text = "lat: " + longitudeUser;
+                longitudeUserText.text = "long: " + longitudeUser;
 
                 if(isEplorationBegin == false)
                 {
